@@ -5,3 +5,4 @@ SConscript('luafilesystem/SCsub');
 SConscript('lua-zlib/SCsub');
 SConscript('lua-ziparchive/SCsub');
 SConscript('lua-expat/SCsub');
+SConscript('lua-misc/SCsub');

@@ -1,0 +1,14 @@
+Import('env')
+
+env_lib = env.Clone()
+env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-I3rd/zlib'])
+
+lib_sources = [
+	"xxtea/xxtea.c",
+	"xxtea/lxxtea.c",
+	"iconv/iconv.cpp",
+	"iconv/liconv.cpp",
+]
+
+# env_lib.Prepend(LIBS=["zlib1"])
+env_lib.SharedLibrary("#bin/misc", lib_sources)
