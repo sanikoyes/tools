@@ -2,3 +2,4 @@ Import('env')
 
 SConscript('lua/SCsub');
 SConscript('zlib/SCsub')
+SConscript('expat-2.1.0/SCsub')

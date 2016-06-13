@@ -1,0 +1,16 @@
+Import('env')
+
+env_expat = env.Clone()
+
+env_expat.Append(CFLAGS=['-DCOMPILED_FROM_DSP'])
+env_expat.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])
+
+expat_sources = [
+	"lib/xmlparse.c",
+	"lib/xmlrole.c",
+	"lib/xmltok.c",
+	"lib/xmltok_impl.c",
+	"lib/xmltok_ns.c",
+]
+
+lib = env_expat.SharedLibrary("#bin/expat2", expat_sources)

@@ -1,0 +1,19 @@
+Import('env')
+
+env_lib = env.Clone()
+
+
+FLAGS = [
+	'-DLUA_BUILD_AS_DLL',
+	'-I3rd/expat-2.1.0/lib'
+]
+
+env_lib.Append(CFLAGS=FLAGS)
+env_lib.Append(CPPFLAGS=FLAGS)
+
+lib_sources = [
+	"src/lxplib.c",
+]
+
+env_lib.Prepend(LIBS=["expat2"])
+env_lib.SharedLibrary("#bin/lxp", lib_sources)
