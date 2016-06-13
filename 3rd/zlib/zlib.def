@@ -1,0 +1,47 @@
+EXPORTS
+; basic functions
+    z_zlibVersion
+    z_deflate
+    z_deflateEnd
+    z_inflate
+    z_inflateEnd
+; advanced functions
+    z_deflateSetDictionary
+    z_deflateCopy
+    z_deflateReset
+    z_deflateParams
+    z_deflateTune
+    z_deflateBound
+    z_deflatePrime
+    z_deflateSetHeader
+    z_inflateSetDictionary
+    z_inflateSync
+    z_inflateCopy
+    z_inflateReset
+    z_inflateReset2
+    z_inflatePrime
+    z_inflateMark
+    z_inflateGetHeader
+    z_inflateBack
+    z_inflateBackEnd
+    z_zlibCompileFlags
+; utility functions
+    z_compress
+    z_compress2
+    z_compressBound
+    z_uncompress
+; checksum functions
+    z_adler32
+    z_crc32
+    z_adler32_combine
+    z_crc32_combine
+; various hacks, don't look :)
+    z_deflateInit_
+    z_deflateInit2_
+    z_inflateInit_
+    z_inflateInit2_
+    z_inflateBackInit_
+    z_zError
+    z_inflateSyncPoint
+    z_get_crc_table
+    z_inflateUndermine

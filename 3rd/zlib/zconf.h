@@ -16,7 +16,7 @@
  */
  
 #define Z_PREFIX
-#define Z_SOLO
+// #define Z_SOLO
  
 #ifdef Z_PREFIX     /* may be set to #if 1 by ./configure */
 #  define Z_PREFIX_SET

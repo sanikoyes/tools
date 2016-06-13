@@ -3,6 +3,7 @@ Import('env')
 env_zlib = env.Clone()
 
 env_zlib.Append(CFLAGS=['-DZLIB_DLL'])
+env_zlib.Append(LINKFLAGS=['/DEF:3rd/zlib/zlib.def'])
 
 zlib_sources = [
 	"adler32.c",

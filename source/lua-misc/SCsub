@@ -8,7 +8,8 @@ lib_sources = [
 	"xxtea/lxxtea.c",
 	"iconv/iconv.cpp",
 	"iconv/liconv.cpp",
+	"ccz/luaccz.c",
 ]
 
-# env_lib.Prepend(LIBS=["zlib1"])
+env_lib.Prepend(LIBS=["zlib1"])
 env_lib.SharedLibrary("#bin/misc", lib_sources)
