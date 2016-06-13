@@ -1,0 +1,11 @@
+Import('env')
+
+env_lib = env.Clone()
+env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-I3rd/zlib'])
+
+lib_sources = [
+	"lua_zlib.c",
+]
+
+env_lib.Prepend(LIBS=["zlib1"])
+env_lib.SharedLibrary("#bin/zlib", lib_sources)

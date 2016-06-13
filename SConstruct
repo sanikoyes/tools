@@ -172,6 +172,7 @@ if selected_platform in platform_list:
 	LINKFLAGS = env.get('LINKFLAGS', '')
 	env['LINKFLAGS'] = ''
 
+	env.Prepend(LIBPATH=["#bin"])
 	env.Append(LINKFLAGS=string.split(str(LINKFLAGS)))
 
 	flag_list = platform_flags[selected_platform]
