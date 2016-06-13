@@ -1,0 +1,10 @@
+Import('env')
+
+env_lib = env.Clone()
+env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+
+lib_sources = [
+	"src/lfs.c",
+]
+
+env_lib.SharedLibrary("#bin/lfs", lib_sources)

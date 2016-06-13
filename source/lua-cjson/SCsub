@@ -1,0 +1,12 @@
+Import('env')
+
+env_lib = env.Clone()
+env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+
+lib_sources = [
+	"fpconv.c",
+	"strbuf.c",
+	"lua_cjson.c",
+]
+
+env_lib.SharedLibrary("#bin/cjson", lib_sources)

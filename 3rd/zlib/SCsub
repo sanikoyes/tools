@@ -1,0 +1,24 @@
+Import('env')
+
+env_zlib = env.Clone()
+
+env_zlib.Append(CFLAGS=['-DZLIB_DLL'])
+
+zlib_sources = [
+	"adler32.c",
+	"compress.c",
+	"crc32.c",
+	"deflate.c",
+	"infback.c",
+	"inffast.c",
+	"inflate.c",
+	"inftrees.c",
+	"trees.c",
+	"uncompr.c",
+	"zutil.c",
+]
+
+lib = env_zlib.SharedLibrary("#bin/zlib1", zlib_sources)
+# '.dll','.lib','.exp'
+# lib = lib[1]
+# env.Prepend(LIBS=[lib])
