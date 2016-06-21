@@ -1,5 +1,6 @@
 // #define LUA_COMPAT_MODULE
 // #define LUA_COMPAT_APIINTCASTS
+#define LUA_LIB
 #define LUA_COMPAT_5_1
 #include "lua.h"
 #include "lauxlib.h"
@@ -825,7 +826,7 @@ static struct { const char *key; xmlParserOption value; } parser_opts[] = {
   {NULL, 0}
 };
 
-int luaopen_xmlreader(lua_State *L) {
+LUA_API int luaopen_xmlreader(lua_State *L) {
   int i;
 
   LIBXML_TEST_VERSION
