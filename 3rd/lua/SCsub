@@ -1,14 +1,14 @@
 Import('env')
 
 env_lualib = env.Clone()
-env_lualib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+env_lualib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
 
 env_lua = env.Clone()
-env_lua.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+env_lua.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
 env_lua.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 
 env_luac = env.Clone()
-env_luac.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+env_luac.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
 env_luac.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
 
 lualib_sources = [

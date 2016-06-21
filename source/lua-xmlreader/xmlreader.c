@@ -1,3 +1,6 @@
+// #define LUA_COMPAT_MODULE
+// #define LUA_COMPAT_APIINTCASTS
+#define LUA_COMPAT_5_1
 #include "lua.h"
 #include "lauxlib.h"
 
