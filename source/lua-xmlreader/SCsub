@@ -1,0 +1,11 @@
+Import('env')
+
+env_lib = env.Clone()
+env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+
+lib_sources = [
+	"error.c",
+	"xmlreader.c",
+]
+
+env_lib.SharedLibrary("#bin/xmlreader", lib_sources)
