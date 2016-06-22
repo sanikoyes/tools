@@ -1,0 +1,13 @@
+SConscript('src/SCsub');
+SConscript('addons/audio/SCsub')
+SConscript('addons/acodec/SCsub')
+SConscript('addons/color/SCsub')
+SConscript('addons/font/SCsub')
+SConscript('addons/image/SCsub')
+SConscript('addons/main/SCsub')
+SConscript('addons/memfile/SCsub')
+SConscript('addons/native_dialog/SCsub')
+# SConscript('addons/physfs/SCsub')
+SConscript('addons/primitives/SCsub')
+# SConscript('addons/ttf/SCsub')
+# SConscript('addons/video/SCsub')

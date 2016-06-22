@@ -1,0 +1,26 @@
+import glob
+Import('env')
+
+env_lib = env.Clone()
+
+CFLAGS=[
+    '-I','3rd/allegro/include',
+    '-I','3rd/allegro/vs2013/include',
+    '-I','3rd/allegro/addons/color',
+    '-DWIN32',
+    '-D_WINDOWS',
+    '-DNDEBUG',
+    '-DALLEGRO_COLOR_SRC',
+    '-DALLEGRO_LIB_BUILD',
+]
+env_lib.Append(
+    CFLAGS=CFLAGS,
+    CXXFLAGS=CFLAGS
+)
+
+lib_sources = [
+    "color.c",
+]
+
+env_lib.Prepend(LIBS=["allegro-5.2"])
+lib = env_lib.SharedLibrary("#bin/allegro_color-5.2", lib_sources)

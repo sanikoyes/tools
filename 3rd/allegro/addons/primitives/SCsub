@@ -1,0 +1,37 @@
+import glob
+Import('env')
+
+env_lib = env.Clone()
+
+CFLAGS=[
+    '-I','3rd/allegro/include',
+    '-I','3rd/allegro/vs2013/include',
+    '-I','3rd/allegro/addons/primitives',
+    '-DWIN32',
+    '-D_WINDOWS',
+    '-DNDEBUG',
+    '-DALLEGRO_PRIMITIVES_SRC',
+    '-DALLEGRO_LIB_BUILD',
+]
+env_lib.Append(
+    CFLAGS=CFLAGS,
+    CXXFLAGS=CFLAGS
+)
+
+lib_sources = [
+    "directx_shaders.cpp",
+    "high_primitives.c",
+    "line_soft.c",
+    "point_soft.c",
+    "polygon.c",
+    "polyline.c",
+    "prim_directx.cpp",
+    "prim_opengl.c",
+    "prim_soft.c",
+    "prim_util.c",
+    "primitives.c",
+    "triangulator.c",
+]
+
+env_lib.Prepend(LIBS=["allegro-5.2"])
+lib = env_lib.SharedLibrary("#bin/allegro_primitives-5.2", lib_sources)

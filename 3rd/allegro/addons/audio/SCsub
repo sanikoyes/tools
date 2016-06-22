@@ -1,0 +1,35 @@
+import glob
+Import('env')
+
+env_lib = env.Clone()
+
+CFLAGS=[
+    '-I','3rd/allegro/include',
+    '-I','3rd/allegro/vs2013/include',
+    '-I','3rd/allegro/addons/audio',
+    '-DWIN32',
+    '-D_WINDOWS',
+    '-DNDEBUG',
+    '-DALLEGRO_KCM_AUDIO_SRC',
+    '-DALLEGRO_LIB_BUILD',
+]
+env_lib.Append(
+    CFLAGS=CFLAGS,
+    CXXFLAGS=CFLAGS
+)
+
+lib_sources = [
+    "audio.c",
+    "audio_io.c",
+    "dsound.cpp",
+    "kcm_dtor.c",
+    "kcm_instance.c",
+    "kcm_mixer.c",
+    "kcm_sample.c",
+    "kcm_stream.c",
+    "kcm_voice.c",
+    "recorder.c",
+]
+
+env_lib.Prepend(LIBS=["allegro-5.2"])
+lib = env_lib.SharedLibrary("#bin/allegro_audio-5.2", lib_sources)

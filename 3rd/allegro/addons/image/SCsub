@@ -1,0 +1,32 @@
+import glob
+Import('env')
+
+env_lib = env.Clone()
+
+CFLAGS=[
+    '-I','3rd/allegro/include',
+    '-I','3rd/allegro/vs2013/include',
+    '-I','3rd/allegro/addons/image',
+    '-DWIN32',
+    '-D_WINDOWS',
+    '-DNDEBUG',
+    '-DALLEGRO_IIO_SRC',
+    '-DALLEGRO_LIB_BUILD',
+]
+env_lib.Append(
+    CFLAGS=CFLAGS,
+    CXXFLAGS=CFLAGS
+)
+
+lib_sources = [
+    "bmp.c",
+    "dds.c",
+    "gdiplus.cpp",
+    "identify.c",
+    "iio.c",
+    "pcx.c",
+    "tga.c",
+]
+
+env_lib.Prepend(LIBS=["allegro-5.2","gdiplus"])
+lib = env_lib.SharedLibrary("#bin/allegro_image-5.2", lib_sources)
