@@ -9,7 +9,6 @@ CFLAGS=[
     '-I','3rd/allegro/addons/image',
     '-DWIN32',
     '-D_WINDOWS',
-    '-DNDEBUG',
     '-DALLEGRO_IIO_SRC',
     '-DALLEGRO_LIB_BUILD',
 ]

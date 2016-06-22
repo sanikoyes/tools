@@ -7,3 +7,4 @@ SConscript('lua-ziparchive/SCsub');
 SConscript('lua-expat/SCsub');
 SConscript('lua-misc/SCsub');
 SConscript('lua-xmlreader/SCsub')
+SConscript('lua-allua/SCsub')

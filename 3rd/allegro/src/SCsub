@@ -8,7 +8,6 @@ CFLAGS=[
     '-I','3rd/allegro/vs2013/include',
     '-DWIN32',
     '-D_WINDOWS',
-    '-DNDEBUG',
     '-DALLEGRO_SRC',
     '-DALLEGRO_LIB_BUILD',
 ]

@@ -1,0 +1,101 @@
+Format: 1.35
+
+
+# You can add a title and sub-title to your menu like this:
+# Title: [project name]
+# SubTitle: [subtitle]
+
+# You can add a footer to your documentation like this:
+# Footer: [text]
+# If you want to add a copyright notice, this would be the place to do it.
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# You can use this file on other computers even if they use different
+# directories.  As long as the command line points to the same source files,
+# Natural Docs will be able to correct the locations automatically.
+# 
+# --------------------------------------------------------------------------
+
+
+Group: C API  {
+
+   File: allua_register  (/home/anders/allegro/Projects/allua/include/allua/allua.h)
+   File: allua_register_audio  (/home/anders/allegro/Projects/allua/include/allua/audio.h)
+   File: allua_register_primitives  (/home/anders/allegro/Projects/allua/include/allua/primitives.h)
+   File: allua_register_primitives  (/home/anders/allegro/Projects/allua/include/allua/filesystem.h)
+   File: audio_stream.h  (/home/anders/allegro/Projects/allua/include/allua/audio_stream.h)
+   File: bitmap.h  (/home/anders/allegro/Projects/allua/include/allua/bitmap.h)
+   File: color.h  (/home/anders/allegro/Projects/allua/include/allua/color.h)
+   File: display.h  (/home/anders/allegro/Projects/allua/include/allua/display.h)
+   File: event.h  (/home/anders/allegro/Projects/allua/include/allua/event.h)
+   File: event_queue.h  (/home/anders/allegro/Projects/allua/include/allua/event_queue.h)
+   File: event_source.h  (/home/anders/allegro/Projects/allua/include/allua/event_source.h)
+   File: filechooser.h  (/home/anders/allegro/Projects/allua/include/allua/filechooser.h)
+   File: font.h  (/home/anders/allegro/Projects/allua/include/allua/font.h)
+   File: fs_entry.h  (/home/anders/allegro/Projects/allua/include/allua/fs_entry.h)
+   File: keyboard.h  (/home/anders/allegro/Projects/allua/include/allua/keyboard.h)
+   File: mixer.h  (/home/anders/allegro/Projects/allua/include/allua/mixer.h)
+   File: mouse.h  (/home/anders/allegro/Projects/allua/include/allua/mouse.h)
+   File: path.h  (/home/anders/allegro/Projects/allua/include/allua/path.h)
+   File: sample.h  (/home/anders/allegro/Projects/allua/include/allua/sample.h)
+   File: sample_id.h  (/home/anders/allegro/Projects/allua/include/allua/sample_id.h)
+   File: sample_instance.h  (/home/anders/allegro/Projects/allua/include/allua/sample_instance.h)
+   File: voice.h  (/home/anders/allegro/Projects/allua/include/allua/voice.h)
+   }  # Group: C API
+
+Group: Lua functions  {
+
+   File: allegro5  (/home/anders/allegro/Projects/allua/docs/nd/allua.lua)
+   File: audio  (/home/anders/allegro/Projects/allua/docs/nd/audio.lua)
+   File: audio_stream  (/home/anders/allegro/Projects/allua/docs/nd/audio_stream.lua)
+   File: bitmap  (/home/anders/allegro/Projects/allua/docs/nd/Bitmap.lua)
+   File: color  (/home/anders/allegro/Projects/allua/docs/nd/Color.lua)
+   File: display  (/home/anders/allegro/Projects/allua/docs/nd/Display.lua)
+   File: event_queue  (/home/anders/allegro/Projects/allua/docs/nd/Event_queue.lua)
+   File: filechooser  (/home/anders/allegro/Projects/allua/docs/nd/filechooser.lua)
+   File: filesystem  (/home/anders/allegro/Projects/allua/docs/nd/Filesystem.lua)
+   File: font  (/home/anders/allegro/Projects/allua/docs/nd/Font.lua)
+   File: fs_entry  (/home/anders/allegro/Projects/allua/docs/nd/Fs_entry.lua)
+   File: Getting started  (/home/anders/allegro/Projects/allua/docs/nd/Getting_started.txt)
+   File: keyboard  (/home/anders/allegro/Projects/allua/docs/nd/Keyboard.lua)
+   File: mixer  (/home/anders/allegro/Projects/allua/docs/nd/mixer.lua)
+   File: mouse  (/home/anders/allegro/Projects/allua/docs/nd/Mouse.lua)
+   File: path  (/home/anders/allegro/Projects/allua/docs/nd/path.lua)
+   File: primitives  (/home/anders/allegro/Projects/allua/docs/nd/Primitives.lua)
+   File: sample  (/home/anders/allegro/Projects/allua/docs/nd/sample.lua)
+   File: sample_instance  (/home/anders/allegro/Projects/allua/docs/nd/sample_instance.lua)
+   File: voice  (/home/anders/allegro/Projects/allua/docs/nd/voice.lua)
+   }  # Group: Lua functions
+
+Group: Index  {
+
+   Index: Everything
+   Function Index: Functions
+   File Index: Files
+   Class Index: Classes
+   }  # Group: Index
+
+
+
+##### Do not change or remove these lines. #####
+Data: 1(D3333RuEG3p\fGH63pooG`Hu3gHulG9t63pooNp38\9oNfG)
+Data: 1(h3333RuEG3p\fGH63pooG`Hu3gHulG9t63pooNp36H9)
+Data: 1(T3333RuEG3p\fGH63pooG`Hu3gHulG9t63pooNp3tG6t)
+Data: 1(-3333RuEG3p\fGH63pooG`Hu3gHulG9t63pooNp3fu963\f)

@@ -1,0 +1,39 @@
+import glob
+Import('env')
+
+env_lib = env.Clone()
+
+CFLAGS=[
+    '-I','3rd/allegro/include',
+    '-I','3rd/allegro/vs2013/include',
+    '-I','3rd/allegro/addons/audio',
+    '-I','3rd/allegro/addons/acodec',
+    '-I','3rd/allegro/addons/native_dialog',
+    '-I','3rd/allegro/addons/font',
+    '-I','3rd/allegro/addons/image',
+    '-I','3rd/allegro/addons/primitives',
+    '-I','3rd/allegro/addons/ttf',
+    '-DLUA_BUILD_AS_DLL',
+    '-DLUA_COMPAT_5_1',
+    '-DWIN32',
+    '-D_WINDOWS',
+]
+
+env_lib.Append(
+    CFLAGS=CFLAGS,
+    CXXFLAGS=CFLAGS
+)
+# env_lib.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])
+
+lib_sources = glob.glob("src/*.c")
+
+env_lib.Prepend(LIBS=[
+    "allegro-5.2",
+    "allegro_audio-5.2",
+    "allegro_acodec-5.2",
+    "allegro_dialog-5.2",
+    "allegro_font-5.2",
+    "allegro_image-5.2",
+    "allegro_primitives-5.2",
+])
+lib = env_lib.SharedLibrary("#bin/liballua", lib_sources)

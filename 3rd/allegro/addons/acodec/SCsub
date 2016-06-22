@@ -10,7 +10,6 @@ CFLAGS=[
     '-I','3rd/allegro/addons/acodec',
     '-DWIN32',
     '-D_WINDOWS',
-    '-DNDEBUG',
     '-DALLEGRO_ACODEC_SRC',
     '-DALLEGRO_LIB_BUILD',
 ]

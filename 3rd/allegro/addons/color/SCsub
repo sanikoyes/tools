@@ -9,7 +9,6 @@ CFLAGS=[
     '-I','3rd/allegro/addons/color',
     '-DWIN32',
     '-D_WINDOWS',
-    '-DNDEBUG',
     '-DALLEGRO_COLOR_SRC',
     '-DALLEGRO_LIB_BUILD',
 ]

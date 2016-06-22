@@ -498,7 +498,8 @@ bool _al_init_gdiplus()
 void _al_shutdown_gdiplus()
 {
    if (gdiplus_inited) {
-      Gdiplus::GdiplusShutdown(gdiplusToken);
+      // TODO:this may dead-loop
+      // Gdiplus::GdiplusShutdown(gdiplusToken);
       gdiplus_inited = false;
    }
 }

@@ -94,7 +94,6 @@ opts.Add('target', 'Compile Target (debug/release_debug/release).', "debug")
 opts.Add('bits', 'Compile Target Bits (default/32/64/fat).', "default")
 opts.Add('platform','Platform: '+str(platform_list)+'.',"")
 opts.Add('p','Platform (same as platform=).',"")
-opts.Add('tools','Build Tools (Including Editor): (yes/no)','yes')
 opts.Add('vsproj', 'Generate Visual Studio Project. (yes/no)', 'no')
 
 # add platform specific options
@@ -196,21 +195,12 @@ if selected_platform in platform_list:
 	suffix="."+selected_platform
 
 	if (env["target"]=="release"):
-# 		if (env["tools"]=="yes"):
-# 			print("Tools can only be built with targets 'debug' and 'release_debug'.")
-# 			sys.exit(255)
 		suffix+=".opt"
 
 	elif (env["target"]=="release_debug"):
-		if (env["tools"]=="yes"):
-			suffix+=".opt.tools"
-		else:
-			suffix+=".opt.debug"
+		suffix+=".opt.debug"
 	else:
-		if (env["tools"]=="yes"):
-			suffix+=".tools"
-		else:
-			suffix+=".debug"
+		suffix+=".debug"
 
 	if (env["bits"]=="32"):
 		suffix+=".32"
@@ -222,7 +212,7 @@ if selected_platform in platform_list:
 	suffix+=env.extra_suffix
 
 	# env["PROGSUFFIX"] = suffix + env["PROGSUFFIX"]
-	# env["OBJSUFFIX"] = suffix + env["OBJSUFFIX"]
+	env["OBJSUFFIX"] = suffix + env["OBJSUFFIX"]
 	# env["LIBSUFFIX"] = suffix + env["LIBSUFFIX"]
 	# env["SHLIBSUFFIX"] = suffix + env["SHLIBSUFFIX"]
 
