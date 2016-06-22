@@ -20,9 +20,10 @@ local function decrypt(file)
 	fp:close()
 end
 
-for name in lfs.dir("assets") do
+local dir = "assets/ResourcesCN"
+for name in lfs.dir(dir) do
 	if name:find(".ccz$") then
-		name = "assets/" .. name
+		name = dir .. "/" .. name
 		print("Decrypting file: " .. name)
 		decrypt(name)
 	end

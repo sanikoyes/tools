@@ -371,7 +371,7 @@ static int allua_Bitmap_gc(lua_State * L)
    struct ALLUA_bitmap_s *pi = (struct ALLUA_bitmap_s *)lua_touserdata(L, 1);
    if (pi->gc_allowed) {
       ALLUA_bitmap im = pi->bitmap;
-      printf("goodbye bitmap (%p)\n", (void *)im);
+      // printf("goodbye bitmap (%p)\n", (void *)im);
       if (im)
          al_destroy_bitmap(im);
    }

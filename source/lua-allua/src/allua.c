@@ -103,7 +103,6 @@ int allua_register(lua_State * L)
    allua_register_sample_instance(L);
    allua_register_audio_stream(L);
    allua_register_filechooser(L);
-   lua_pop(L, 1);
    return 1;
 }
 
