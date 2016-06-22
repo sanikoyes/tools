@@ -1,0 +1,29 @@
+.TH "ALLEGRO_VIDEO_EVENT_TYPE" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+ALLEGRO_VIDEO_EVENT_TYPE \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro_video.h>
+
+enum\ ALLEGRO_VIDEO_EVENT_TYPE
+\f[]
+.fi
+.SH DESCRIPTION
+.IP \[bu] 2
+ALLEGRO_EVENT_VIDEO_FRAME_SHOW \- This event is sent when it is time to
+show a new frame.
+Once you receive this event, you can draw the current frame (as returned
+by al_get_video_frame(3)).
+al_get_video_frame(3) will continue returning the same frame until the
+next ALLEGRO_EVENT_VIDEO_FRAME_SHOW is sent.
+.IP \[bu] 2
+ALLEGRO_EVENT_VIDEO_FINISHED \- This event is sent when the video is
+finished.
+Depending on the backend, it may be possible to seek to an earlier part
+of the video and set the video to play to resume playback.
+.SH SINCE
+.PP
+5.1.0

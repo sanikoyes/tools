@@ -1,0 +1,34 @@
+.TH "al_perspective_transform" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+al_perspective_transform \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro.h>
+
+void\ al_perspective_transform(ALLEGRO_TRANSFORM\ *trans,
+\ \ \ float\ left,\ float\ top,\ float\ n,
+\ \ \ float\ right,\ float\ bottom,\ float\ f)
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Like al_orthographic_transform(3) but honors perspective.
+If everything is at a z\-position of \-near it will look the same as
+with an orthographic transformation.
+.PP
+To use a specific horizontal field of view you can use the relation:
+.IP
+.nf
+\f[C]
+tan(hfov\ /\ 2)\ =\ (right\ \-\ left)\ /\ 2\ /\ near
+\f[]
+.fi
+.SH SINCE
+.PP
+5.1.3
+.SH SEE ALSO
+.PP
+al_use_projection_transform(3), al_orthographic_transform(3)

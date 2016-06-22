@@ -1,0 +1,24 @@
+.TH "al_get_current_inverse_transform" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+al_get_current_inverse_transform \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro.h>
+
+const\ ALLEGRO_TRANSFORM\ *al_get_current_inverse_transform(void)
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Returns the inverse of the current transformation of the target bitmap.
+If there is no target bitmap, this function returns NULL.
+.PP
+This is similar to calling
+\f[C]al_invert_transform(al_get_current_transform())\f[] but the result
+of this function is cached.
+.SH SINCE
+.PP
+5.1.0

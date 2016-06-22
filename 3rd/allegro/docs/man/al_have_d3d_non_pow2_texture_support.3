@@ -1,0 +1,19 @@
+.TH "al_have_d3d_non_pow2_texture_support" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+al_have_d3d_non_pow2_texture_support \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro_direct3d.h>
+
+bool\ al_have_d3d_non_pow2_texture_support(void)
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Returns whether the Direct3D device supports textures whose dimensions
+are not powers of two.
+.PP
+\f[I]Returns:\f[] True if device suports NPOT textures, false otherwise.

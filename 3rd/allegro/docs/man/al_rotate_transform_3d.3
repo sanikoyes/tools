@@ -1,0 +1,21 @@
+.TH "al_rotate_transform_3d" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+al_rotate_transform_3d \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro.h>
+
+void\ al_rotate_transform_3d(ALLEGRO_TRANSFORM\ *trans,
+\ \ \ float\ x,\ float\ y,\ float\ z,\ float\ angle)
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Combines the given transformation with a transformation which rotates
+coordinates around the given vector by the given angle in radians.
+.SH SINCE
+.PP
+5.1.3

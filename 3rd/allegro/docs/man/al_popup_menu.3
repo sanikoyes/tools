@@ -1,0 +1,32 @@
+.TH "al_popup_menu" "3" "" "Allegro reference manual" ""
+.SH NAME
+.PP
+al_popup_menu \- Allegro 5 API
+.SH SYNOPSIS
+.IP
+.nf
+\f[C]
+#include\ <allegro5/allegro_native_dialog.h>
+
+bool\ al_popup_menu(ALLEGRO_MENU\ *popup,\ ALLEGRO_DISPLAY\ *display)
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Displays a context menu next to the mouse cursor.
+The menu must have been created with al_create_popup_menu(3).
+It generates events just like a regular display menu does.
+It is possible that the menu will be canceled without any selection
+being made.
+.PP
+The \f[C]display\f[] parameter indicates which window the menu is
+associated with (when you process the menu click event), but does not
+actually affect where the menu is located on the screen.
+.PP
+Returns \f[C]true\f[] if the context menu was displayed.
+.SH SINCE
+.PP
+5.1.0
+.SH SEE ALSO
+.PP
+al_create_popup_menu(3)

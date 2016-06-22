@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Color addon</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+  <script type="text/javascript" src="autosuggest.js"></script>
+  <script type="text/javascript" src="search_index.js"></script>
+</head>
+<body>
+<div class="sidebar">
+
+<div>
+<ul>
+<li><a href="index.html"><strong>Contents</strong></a></li>
+<li><a href="config.html">Configuration files</a></li>
+<li><a href="display.html">Display</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="file.html">File I/O</a></li>
+<li><a href="fshook.html">Filesystem</a></li>
+<li><a href="fixed.html">Fixed point math</a></li>
+<li><a href="fullscreen_mode.html">Fullscreen modes</a></li>
+<li><a href="graphics.html">Graphics</a></li>
+<li><a href="haptic.html">Haptic</a></li>
+<li><a href="joystick.html">Joystick</a></li>
+<li><a href="keyboard.html">Keyboard</a></li>
+<li><a href="memory.html">Memory</a></li>
+<li><a href="monitor.html">Monitor</a></li>
+<li><a href="mouse.html">Mouse</a></li>
+<li><a href="path.html">Path</a></li>
+<li><a href="shader.html">Shader</a></li>
+<li><a href="state.html">State</a></li>
+<li><a href="system.html">System</a></li>
+<li><a href="threads.html">Threads</a></li>
+<li><a href="time.html">Time</a></li>
+<li><a href="timer.html">Timer</a></li>
+<li><a href="touch.html">Touch input</a></li>
+<li><a href="transformations.html">Transformations</a></li>
+<li><a href="utf8.html">UTF-8</a></li>
+<li><a href="misc.html">Miscellaneous</a></li>
+<li><a href="platform.html">Platform-specific</a></li>
+<li><a href="direct3d.html">Direct3D</a></li>
+<li><a href="opengl.html">OpenGL</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+
+<div>
+<ul>
+<li><a href="index.html#addons"><strong>Addons</strong></a></li>
+<li><a href="audio.html">Audio addon</a></li>
+<li><a href="acodec.html">Audio codecs</a></li>
+<li><a href="color.html">Color addon</a></li>
+<li><a href="font.html">Font addons</a></li>
+<li><a href="image.html">Image I/O addon</a></li>
+<li><a href="main.html">Main addon</a></li>
+<li><a href="memfile.html">Memfile addon</a></li>
+<li><a href="native_dialog.html">Native dialogs addon</a></li>
+<li><a href="physfs.html">PhysicsFS addon</a></li>
+<li><a href="primitives.html">Primitives addon</a></li>
+<li><a href="video.html">Video streaming addon</a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+
+<div>
+<ul>
+<li><a href="index_all.html"><strong>Index</strong></a></li>
+</ul>
+<!-- The preceding blank line forces pandoc to terminate the list -->
+</div>
+
+<div class="searchbox">
+<script type="text/javascript">
+function on_search(index, control) {
+    // Note to self: the less-than sign must NOT converted to an entity!
+    // SCRIPT elements are special.  The HTML validator gives bad advice.
+    for (i = 0; i < search_index.length; i++) {
+        if (search_index[i] == control.keywords[index]) {
+            break;
+        }
+    }
+    location.href = search_urls[i];
+}
+</script>
+Search<br/> <input type="text" name="q" id="q" size="15" autocomplete="off"/><br/>
+<script type="text/javascript"> new autosuggest("q", search_index, null, on_search); </script>
+</div>
+
+</div>
+
+<div class="content">
+<div id="header">
+<h1 class="title">Color addon</h1>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#al_color_cmyk">al_color_cmyk</a></li>
+<li><a href="#al_color_cmyk_to_rgb">al_color_cmyk_to_rgb</a></li>
+<li><a href="#al_color_hsl">al_color_hsl</a></li>
+<li><a href="#al_color_hsl_to_rgb">al_color_hsl_to_rgb</a></li>
+<li><a href="#al_color_hsv">al_color_hsv</a></li>
+<li><a href="#al_color_hsv_to_rgb">al_color_hsv_to_rgb</a></li>
+<li><a href="#al_color_html">al_color_html</a></li>
+<li><a href="#al_color_html_to_rgb">al_color_html_to_rgb</a></li>
+<li><a href="#al_color_rgb_to_html">al_color_rgb_to_html</a></li>
+<li><a href="#al_color_name">al_color_name</a></li>
+<li><a href="#al_color_name_to_rgb">al_color_name_to_rgb</a></li>
+<li><a href="#al_color_rgb_to_cmyk">al_color_rgb_to_cmyk</a></li>
+<li><a href="#al_color_rgb_to_hsl">al_color_rgb_to_hsl</a></li>
+<li><a href="#al_color_rgb_to_hsv">al_color_rgb_to_hsv</a></li>
+<li><a href="#al_color_rgb_to_name">al_color_rgb_to_name</a></li>
+<li><a href="#al_color_rgb_to_yuv">al_color_rgb_to_yuv</a></li>
+<li><a href="#al_color_yuv">al_color_yuv</a></li>
+<li><a href="#al_color_yuv_to_rgb">al_color_yuv_to_rgb</a></li>
+<li><a href="#al_get_allegro_color_version">al_get_allegro_color_version</a></li>
+</ul>
+</div>
+<p>These functions are declared in the following header file. Link with allegro_color.</p>
+<pre class="sourceCode c"><code class="sourceCode c"> <span class="ot">#include &lt;allegro5/allegro_color.h&gt;</span></code></pre>
+<h1 id="al_color_cmyk"><a href="#al_color_cmyk">al_color_cmyk</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_cmyk(<span class="dt">float</span> c, <span class="dt">float</span> m, <span class="dt">float</span> y, <span class="dt">float</span> k)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L472">Source Code</a></p>
+<p>Return an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a> structure from CMYK values (cyan, magenta, yellow, black).</p>
+<p>See also: <a href="color.html#al_color_cmyk_to_rgb">al_color_cmyk_to_rgb</a>, <a href="color.html#al_color_rgb_to_cmyk">al_color_rgb_to_cmyk</a></p>
+<h1 id="al_color_cmyk_to_rgb"><a href="#al_color_cmyk_to_rgb">al_color_cmyk_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_cmyk_to_rgb(<span class="dt">float</span> cyan, <span class="dt">float</span> magenta, <span class="dt">float</span> yellow,
+    <span class="dt">float</span> key, <span class="dt">float</span> *red, <span class="dt">float</span> *green, <span class="dt">float</span> *blue)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L438">Source Code</a></p>
+<p>Convert CMYK values to RGB values.</p>
+<p>See also: <a href="color.html#al_color_cmyk">al_color_cmyk</a>, <a href="color.html#al_color_rgb_to_cmyk">al_color_rgb_to_cmyk</a></p>
+<h1 id="al_color_hsl"><a href="#al_color_hsl">al_color_hsl</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_hsl(<span class="dt">float</span> h, <span class="dt">float</span> s, <span class="dt">float</span> l)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L428">Source Code</a></p>
+<p>Return an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a> structure from HSL (hue, saturation, lightness) values.</p>
+<p>See also: <a href="color.html#al_color_hsl_to_rgb">al_color_hsl_to_rgb</a>, <a href="color.html#al_color_hsv">al_color_hsv</a></p>
+<h1 id="al_color_hsl_to_rgb"><a href="#al_color_hsl_to_rgb">al_color_hsl_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_hsl_to_rgb(<span class="dt">float</span> hue, <span class="dt">float</span> saturation, <span class="dt">float</span> lightness,
+   <span class="dt">float</span> *red, <span class="dt">float</span> *green, <span class="dt">float</span> *blue)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L359">Source Code</a></p>
+<p>Convert values in HSL color model to RGB color model.</p>
+<p>Parameters:</p>
+<ul>
+<li>hue - Color hue angle in the range 0..360.</li>
+<li>saturation - Color saturation in the range 0..1.</li>
+<li>lightness - Color lightness in the range 0..1.</li>
+<li>red, green, blue - returned RGB values in the range 0..1.</li>
+</ul>
+<p>See also: <a href="color.html#al_color_rgb_to_hsl">al_color_rgb_to_hsl</a>, <a href="color.html#al_color_hsl">al_color_hsl</a>, <a href="color.html#al_color_hsv_to_rgb">al_color_hsv_to_rgb</a></p>
+<h1 id="al_color_hsv"><a href="#al_color_hsv">al_color_hsv</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_hsv(<span class="dt">float</span> h, <span class="dt">float</span> s, <span class="dt">float</span> v)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L331">Source Code</a></p>
+<p>Return an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a> structure from HSV (hue, saturation, value) values.</p>
+<p>See also: <a href="color.html#al_color_hsv_to_rgb">al_color_hsv_to_rgb</a>, <a href="color.html#al_color_hsl">al_color_hsl</a></p>
+<h1 id="al_color_hsv_to_rgb"><a href="#al_color_hsv_to_rgb">al_color_hsv_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_hsv_to_rgb(<span class="dt">float</span> hue, <span class="dt">float</span> saturation, <span class="dt">float</span> value,
+   <span class="dt">float</span> *red, <span class="dt">float</span> *green, <span class="dt">float</span> *blue)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L258">Source Code</a></p>
+<p>Convert values in HSV color model to RGB color model.</p>
+<p>Parameters:</p>
+<ul>
+<li>hue - Color hue angle in the range 0..360.</li>
+<li>saturation - Color saturation in the range 0..1.</li>
+<li>value - Color value in the range 0..1.</li>
+<li>red, green, blue - returned RGB values in the range 0..1.</li>
+</ul>
+<p>See also: <a href="color.html#al_color_rgb_to_hsv">al_color_rgb_to_hsv</a>, <a href="color.html#al_color_hsv">al_color_hsv</a>, <a href="color.html#al_color_hsl_to_rgb">al_color_hsl_to_rgb</a></p>
+<h1 id="al_color_html"><a href="#al_color_html">al_color_html</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_html(<span class="dt">char</span> <span class="dt">const</span> *string)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L560">Source Code</a></p>
+<p>Interprets an HTML-style hex number (e.g. #00faff) as a color. The accepted format is the same as <a href="color.html#al_color_html_to_rgb">al_color_html_to_rgb</a>.</p>
+<p>Returns the interpreted color, or <code>al_map_rgba(0, 0, 0, 0)</code> if the string could not be parsed.</p>
+<blockquote>
+<p><em>Note</em>: the behaviour on invalid strings is different from Allegro 5.0.x.</p>
+</blockquote>
+<p>See also: <a href="color.html#al_color_html_to_rgb">al_color_html_to_rgb</a>, <a href="color.html#al_color_rgb_to_html">al_color_rgb_to_html</a></p>
+<h1 id="al_color_html_to_rgb"><a href="#al_color_html_to_rgb">al_color_html_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">bool al_color_html_to_rgb(<span class="dt">char</span> <span class="dt">const</span> *string,
+   <span class="dt">float</span> *red, <span class="dt">float</span> *green, <span class="dt">float</span> *blue)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L530">Source Code</a></p>
+<p>Interprets an HTML-style hex number (e.g. #00faff) as a color. The only accepted formats are &quot;#RRGGBB&quot; and &quot;RRGGBB&quot; where R, G, B are hexadecimal digits [0-9A-Fa-f].</p>
+<p>Returns true on success, false on failure. On failure all components are set to zero.</p>
+<blockquote>
+<p><em>Note</em>: the behaviour on invalid strings is different from Allegro 5.0.x.</p>
+</blockquote>
+<p>See also: <a href="color.html#al_color_html">al_color_html</a>, <a href="color.html#al_color_rgb_to_html">al_color_rgb_to_html</a></p>
+<h1 id="al_color_rgb_to_html"><a href="#al_color_rgb_to_html">al_color_rgb_to_html</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_rgb_to_html(<span class="dt">float</span> red, <span class="dt">float</span> green, <span class="dt">float</span> blue,
+    <span class="dt">char</span> *string)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L520">Source Code</a></p>
+<p>Create an HTML-style string representation of an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a>, e.g. #00faff.</p>
+<p>Parameters:</p>
+<ul>
+<li>red, green, blue - The color components in the range 0..1.</li>
+<li>string - A pointer to a buffer of at least 8 bytes, into which the result will be written (including the NUL terminator).</li>
+</ul>
+<p>Example:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">char</span> html[<span class="dv">8</span>];
+al_color_rgb_to_html(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, html);</code></pre>
+<p>Now html will contain &quot;#ff0000&quot;.</p>
+<p>See also: <a href="color.html#al_color_html">al_color_html</a>, <a href="color.html#al_color_html_to_rgb">al_color_html_to_rgb</a></p>
+<h1 id="al_color_name"><a href="#al_color_name">al_color_name</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_name(<span class="dt">char</span> <span class="dt">const</span> *name)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L246">Source Code</a></p>
+<p>Return an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a> with the given name. If the color is not found then black is returned.</p>
+<p>See <a href="color.html#al_color_name_to_rgb">al_color_name_to_rgb</a> for the list of names.</p>
+<h1 id="al_color_name_to_rgb"><a href="#al_color_name_to_rgb">al_color_name_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">bool al_color_name_to_rgb(<span class="dt">char</span> <span class="dt">const</span> *name, <span class="dt">float</span> *r, <span class="dt">float</span> *g, <span class="dt">float</span> *b)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L202">Source Code</a></p>
+<p>Parameters:</p>
+<ul>
+<li>name - The (lowercase) name of the color.</li>
+<li>r, g, b - If one of the recognized color names below is passed, the corresponding RGB values in the range 0..1 are written.</li>
+</ul>
+<p>The recognized names are:</p>
+<blockquote>
+<p>aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black, blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dodgerblue, firebrick, floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, goldenrod, gold, gray, green, greenyellow, honeydew, hotpink, indianred, indigo, ivory, khaki, lavenderblush, lavender, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgreen, lightgrey, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightsteelblue, lightyellow, lime, limegreen, linen, magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple, mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise, mediumvioletred, midnightblue, mintcream, mistyrose, moccasin, avajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid, palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip, peachpuff, peru, pink, plum, powderblue, purple, purwablue, red, rosybrown, royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna, silver, skyblue, slateblue, slategray, snow, springgreen, steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white, whitesmoke, yellow, yellowgreen</p>
+</blockquote>
+<p>They are taken from <a href="http://www.w3.org/TR/2010/PR-css3-color-20101028/#svg-color">http://www.w3.org/TR/2010/PR-css3-color-20101028/#svg-color</a>.</p>
+<p>Returns: true if a name from the list above was passed, else false.</p>
+<p>See also: <a href="color.html#al_color_name">al_color_name</a></p>
+<h1 id="al_color_rgb_to_cmyk"><a href="#al_color_rgb_to_cmyk">al_color_rgb_to_cmyk</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_rgb_to_cmyk(<span class="dt">float</span> red, <span class="dt">float</span> green, <span class="dt">float</span> blue,
+   <span class="dt">float</span> *cyan, <span class="dt">float</span> *magenta, <span class="dt">float</span> *yellow, <span class="dt">float</span> *key)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L450">Source Code</a></p>
+<p>Each RGB color can be represented in CMYK with a K component of 0 with the following formula:</p>
+<pre><code>C = 1 - R
+M = 1 - G
+Y = 1 - B
+K = 0</code></pre>
+<p>This function will instead find the representation with the maximal value for K and minimal color components.</p>
+<p>See also: <a href="color.html#al_color_cmyk">al_color_cmyk</a>, <a href="color.html#al_color_cmyk_to_rgb">al_color_cmyk_to_rgb</a></p>
+<h1 id="al_color_rgb_to_hsl"><a href="#al_color_rgb_to_hsl">al_color_rgb_to_hsl</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_rgb_to_hsl(<span class="dt">float</span> red, <span class="dt">float</span> green, <span class="dt">float</span> blue,
+   <span class="dt">float</span> *hue, <span class="dt">float</span> *saturation, <span class="dt">float</span> *lightness)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L381">Source Code</a></p>
+<p>Given an RGB triplet with components in the range 0..1, return the hue in degrees from 0..360 and saturation and lightness in the range 0..1.</p>
+<p>See also: <a href="color.html#al_color_hsl_to_rgb">al_color_hsl_to_rgb</a>, <a href="color.html#al_color_hsl">al_color_hsl</a></p>
+<h1 id="al_color_rgb_to_hsv"><a href="#al_color_rgb_to_hsv">al_color_rgb_to_hsv</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_rgb_to_hsv(<span class="dt">float</span> red, <span class="dt">float</span> green, <span class="dt">float</span> blue,
+   <span class="dt">float</span> *hue, <span class="dt">float</span> *saturation, <span class="dt">float</span> *value)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L286">Source Code</a></p>
+<p>Given an RGB triplet with components in the range 0..1, return the hue in degrees from 0..360 and saturation and value in the range 0..1.</p>
+<p>See also: <a href="color.html#al_color_hsv_to_rgb">al_color_hsv_to_rgb</a>, <a href="color.html#al_color_hsv">al_color_hsv</a></p>
+<h1 id="al_color_rgb_to_name"><a href="#al_color_rgb_to_name">al_color_rgb_to_name</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">char</span> <span class="dt">const</span> *al_color_rgb_to_name(<span class="dt">float</span> r, <span class="dt">float</span> g, <span class="dt">float</span> b)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L221">Source Code</a></p>
+<p>Given an RGB triplet with components in the range 0..1, find a color name describing it approximately.</p>
+<p>See also: <a href="color.html#al_color_name_to_rgb">al_color_name_to_rgb</a>, <a href="color.html#al_color_name">al_color_name</a></p>
+<h1 id="al_color_rgb_to_yuv"><a href="#al_color_rgb_to_yuv">al_color_rgb_to_yuv</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_rgb_to_yuv(<span class="dt">float</span> red, <span class="dt">float</span> green, <span class="dt">float</span> blue,
+   <span class="dt">float</span> *y, <span class="dt">float</span> *u, <span class="dt">float</span> *v)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L496">Source Code</a></p>
+<p>Convert RGB values to YUV color space.</p>
+<p>See also: <a href="color.html#al_color_yuv">al_color_yuv</a>, <a href="color.html#al_color_yuv_to_rgb">al_color_yuv_to_rgb</a></p>
+<h1 id="al_color_yuv"><a href="#al_color_yuv">al_color_yuv</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c">ALLEGRO_COLOR al_color_yuv(<span class="dt">float</span> y, <span class="dt">float</span> u, <span class="dt">float</span> v)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L510">Source Code</a></p>
+<p>Return an <a href="graphics.html#allegro_color">ALLEGRO_COLOR</a> structure from YUV values.</p>
+<p>See also: <a href="color.html#al_color_yuv_to_rgb">al_color_yuv_to_rgb</a>, <a href="color.html#al_color_rgb_to_yuv">al_color_rgb_to_yuv</a></p>
+<h1 id="al_color_yuv_to_rgb"><a href="#al_color_yuv_to_rgb">al_color_yuv_to_rgb</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> al_color_yuv_to_rgb(<span class="dt">float</span> y, <span class="dt">float</span> u, <span class="dt">float</span> v,
+    <span class="dt">float</span> *red, <span class="dt">float</span> *green, <span class="dt">float</span> *blue)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L482">Source Code</a></p>
+<p>Convert YUV color values to RGB color space.</p>
+<p>See also: <a href="color.html#al_color_yuv">al_color_yuv</a>, <a href="color.html#al_color_rgb_to_yuv">al_color_rgb_to_yuv</a></p>
+<h1 id="al_get_allegro_color_version"><a href="#al_get_allegro_color_version">al_get_allegro_color_version</a></h1>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">uint32_t</span> al_get_allegro_color_version(<span class="dt">void</span>)</code></pre>
+<p><a href="https://github.com/liballeg/allegro5/blob/5.1/addons/color/color.c#L573">Source Code</a></p>
+<p>Returns the (compiled) version of the addon, in the same format as <a href="system.html#al_get_allegro_version">al_get_allegro_version</a>.</p>
+<p class="timestamp">
+Allegro version 5.2.0
+ - Last updated: 2016-03-31 03:33:44 UTC
+</p>
+</div>
+</body>
+</html>
