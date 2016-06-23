@@ -32,16 +32,25 @@ local function load_plist(text)
     end
 
     local function next_value()
+        -- while true do
+        --     r:read()
+        --     if r:node_type() ~= "significant whitespace" then
+        --         break
+        --     end
+        -- end
         local tag = next_tag()
-        if tag == "end" then
-            return
-        end
+        -- if tag == "end" then
+        --     return
+        -- end
 
         local loaders = {
             ["plist"] = function()
                 return next_value()
             end,
             ["dict"] = function()
+                if r:is_empty_element() then
+                    return {}
+                end
                 local dict = {}
                 while true do
                     local key = next_text("key")
@@ -54,14 +63,21 @@ local function load_plist(text)
                 return dict
             end,
             ["array"] = function()
-                local array = {}
-                while true do
-                    local value = next_value()
-                    if value == nil then
-                        break
-                    end
-                    table.insert(array, value)
+                if r:is_empty_element() then
+                    return {}
                 end
+                local array = {}
+                -- while true do
+                --     while r:read() do
+                --         print(r:node_type())
+                --         if r:node_type() == "element" then
+                --             print( r:name())
+                --         elseif r:node_type() == "end element" then
+                --             break
+                --         end
+                --     end
+                --     os.exit()
+                -- end
                 return array
             end,
             ["string"] = function()
