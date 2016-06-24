@@ -31,18 +31,7 @@ local function load_plist(text)
         return result
     end
 
-    local function next_value()
-        -- while true do
-        --     r:read()
-        --     if r:node_type() ~= "significant whitespace" then
-        --         break
-        --     end
-        -- end
-        local tag = next_tag()
-        -- if tag == "end" then
-        --     return
-        -- end
-
+    local function next_value(tag)
         local loaders = {
             ["plist"] = function()
                 return next_value()
@@ -57,8 +46,15 @@ local function load_plist(text)
                     if key == nil then
                         break
                     end
-                    local value = next_value()
-                    dict[key] = value
+                    local tag = next_tag()
+                    if tag == "key" then
+                        dict[key] = "null"
+                        dict[next_text()] = "null"
+                    elseif tag == "end" then
+                    else
+                        local value = next_value(tag)
+                        dict[key] = value
+                    end
                 end
                 return dict
             end,
@@ -67,17 +63,14 @@ local function load_plist(text)
                     return {}
                 end
                 local array = {}
-                -- while true do
-                --     while r:read() do
-                --         print(r:node_type())
-                --         if r:node_type() == "element" then
-                --             print( r:name())
-                --         elseif r:node_type() == "end element" then
-                --             break
-                --         end
-                --     end
-                --     os.exit()
-                -- end
+                while true do
+                    local tag = next_tag()
+                    if tag == "end" then
+                        break
+                    else
+                        table.insert(array, next_value(tag))
+                    end
+                end
                 return array
             end,
             ["string"] = function()
@@ -93,6 +86,8 @@ local function load_plist(text)
                 return false
             end,
         }
+
+        local tag = tag or next_tag()
         local f = assert(loaders[tag], "unknown tag: " .. tag)
         return f()
     end

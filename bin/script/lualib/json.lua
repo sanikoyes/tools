@@ -104,7 +104,9 @@ function encode (v, tab)
         end
       end
     end
-    if bArray then
+    if maxCount == 0 then
+      return '[]'
+    elseif bArray then
       return '[\n' .. table.concat(rval, ',\n') .. '\n' .. tail .. ']'
     else
       return '{\n' .. table.concat(rval, ',\n') .. '\n' .. tail .. '}'
