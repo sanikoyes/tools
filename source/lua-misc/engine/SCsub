@@ -1,0 +1,8 @@
+Import('env_lib')
+
+env_lib.add_source_files(env_lib.lib_sources, [
+	"*.c",
+	"curve/*.cpp",
+])
+
+env_lib.Append(CPPFLAGS=['/EHsc'])

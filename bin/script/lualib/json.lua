@@ -60,7 +60,7 @@ local isEncodable
 --- Encodes an arbitrary Lua object / variable.
 -- @param v The Lua object / variable to be JSON encoded.
 -- @return String containing the JSON encoding in internal Lua string format (i.e. not unicode)
-function encode (v, tab)
+function encode (v, tab, is_forward)
   tab = tab or 1
   -- Handle nil values
   if v==nil then
@@ -88,27 +88,45 @@ function encode (v, tab)
     local bArray, maxCount = isArray(v)
     if bArray then
       for i = 1,maxCount do
-        table.insert(rval, prefix .. encode(v[i], tab + 1))
+        table.insert(rval, '' .. encode(v[i], tab + 1, comparator))
       end
     else	-- An object, not an array
       -- sort keys
+      local forwards = {}
       local keys = {}
       for i,j in base.pairs(v) do
-        table.insert(keys, i)
+        if is_forward and is_forward(i) then
+          table.insert(forwards, i)
+        else
+          table.insert(keys, i)
+        end
       end
+      table.sort(forwards, function(left, right) return left >= right end)
       table.sort(keys, function(left, right) return left < right end)
+      for _,k in base.pairs(forwards) do
+        table.insert(keys, 1, k)
+      end
       for _, i in base.pairs(keys) do
         local j = v[i]
         if isEncodable(i) and isEncodable(j) then
-          table.insert(rval, prefix .. '"' .. encodeString(i) .. '": ' .. encode(j, tab + 1))
+          table.insert(rval, '"' .. encodeString(i) .. '": ' .. encode(j, tab + 1, comparator))
         end
       end
     end
-    if maxCount == 0 then
-      return '[]'
-    elseif bArray then
-      return '[\n' .. table.concat(rval, ',\n') .. '\n' .. tail .. ']'
+    if bArray then
+      local str = table.concat(rval, ',\n')
+      if #str >= 40 then
+        for i,v in base.pairs(rval) do
+          rval[i] = prefix .. v
+        end
+        return '[\n' .. table.concat(rval, ',\n') .. '\n' .. tail .. ']'
+      else
+        return ('[' .. table.concat(rval, ', ') .. ']')
+      end
     else
+      for i,v in base.pairs(rval) do
+        rval[i] = prefix .. v
+      end
       return '{\n' .. table.concat(rval, ',\n') .. '\n' .. tail .. '}'
     end
   end

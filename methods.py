@@ -14,7 +14,8 @@ def add_source_files(self, sources, filetype, lib_env = None, shared = False):
 			sources.append(self.Object(f))
 	else:
 		for f in filetype:
-			sources.append(self.Object(f))
+			add_source_files(self, sources, f, lib_env, shared)
+			# sources.append(self.Object(f))
 
 # def build_shader_header(target, source, env):
 

@@ -3,13 +3,14 @@ Import('env')
 env_lib = env.Clone()
 env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-I3rd/zlib'])
 
-lib_sources = [
-	"xxtea/xxtea.c",
-	"xxtea/lxxtea.c",
-	"iconv/iconv.cpp",
-	"iconv/liconv.cpp",
-	"ccz/luaccz.c",
-]
+env_lib.lib_sources = []
+
+Export('env_lib')
+
+SConscript('ccz/SCsub')
+SConscript('engine/SCsub')
+SConscript('iconv/SCsub')
+SConscript('xxtea/SCsub')
 
 env_lib.Prepend(LIBS=["zlib1"])
-env_lib.SharedLibrary("#bin/misc", lib_sources)
+env_lib.SharedLibrary("#bin/misc", env_lib.lib_sources)
