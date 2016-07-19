@@ -69,11 +69,14 @@ static int l_get_point_count(lua_State *L) {
 static Vector2 luaL_checkvector2(lua_State *L, int index) {
 
 	luaL_checktype(L, index, LUA_TTABLE);
+	lua_pushvalue(L, index);
 	Vector2 vec;
+
 	lua_getfield(L, -1, "x");
 	vec.x = luaL_checknumber(L, -1);
-	lua_getfield(L, -1, "y");
+	lua_getfield(L, -2, "y");
 	vec.y = luaL_checknumber(L, -1);
+	lua_pop(L, 3);
 	return vec;
 }
 
