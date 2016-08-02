@@ -4,7 +4,6 @@ env_lib = env.Clone()
 
 
 FLAGS = [
-	'-DLUA_BUILD_AS_DLL',
 	'-DHAVE_INTTYPES_H',
 	'-DHAVE__BOOL',
 	'-DHAVE_SMALL',
@@ -21,6 +20,13 @@ FLAGS = [
 	'-Isource/lua-ziparchive/Misc/liblzma/liblzma/rangecoder',
 	'-Isource/lua-ziparchive/Misc/liblzma/liblzma/simple',
 ]
+
+import sys
+if sys.platform in ['win32']:
+	FLAGS.append('-DLUA_BUILD_AS_DLL')
+else:
+	FLAGS.append('-std=c99')
+	FLAGS.append('-DHAVE_CONFIG_H')
 
 env_lib.Append(CFLAGS=FLAGS)
 env_lib.Append(CPPFLAGS=FLAGS)

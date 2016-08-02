@@ -111,10 +111,6 @@ Help(opts.GenerateHelpText(env_base)) # generate help
 # add default include paths
 env_base.Append(CPPPATH=['#source','#3rd','#3rd/lua/src','#'])
 
-# if (env_base['target']=='debug'):
-# 	env_base.Append(CPPFLAGS=['-DDEBUG_MEMORY_ALLOC'])
-# 	env_base.Append(CPPFLAGS=['-DSCI_NAMESPACE'])
-
 env_base.platforms = {}
 
 selected_platform =""
@@ -182,16 +178,6 @@ if selected_platform in platform_list:
 	#must happen after the flags, so when flags are used by configure, stuff happens (ie, ssl on x11)
 	detect.configure(env)
 
-
-# 	if (env["freetype"]!="no"):
-# 		env.Append(CCFLAGS=['-DFREETYPE_ENABLED'])
-# 		if (env["freetype"]=="builtin"):
-# 			env.Append(CPPPATH=['#drivers/freetype'])
-# 			env.Append(CPPPATH=['#drivers/freetype/freetype/include'])
-
-
-	#env['platform_libsuffix'] = env['LIBSUFFIX']
-
 	suffix="."+selected_platform
 
 	if (env["target"]=="release"):
@@ -233,9 +219,6 @@ if selected_platform in platform_list:
 			env.module_list.append(x)
 		sys.path.remove(tmppath)
 		sys.modules.pop('config')
-
-# 	if (env['lua']=='yes'):
-# 		env.Append(CPPFLAGS=['-DLUASCRIPT_ENABLED'])
 
 	Export('env')
 	#build subdirs, the build order is dependent on link order.

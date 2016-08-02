@@ -1,11 +1,21 @@
+import sys
 Import('env')
 
 env_lib = env.Clone()
 
 env_lib.Append(CFLAGS=[
 	'-I','3rd/libxml2-2.9.4/include',
-	'-I','3rd/libxml2-2.9.4/win32/VC10',
 ])
+
+if sys.platform == "win32":
+    env_lib.Append(CFLAGS=[
+        '-I','3rd/libxml2-2.9.4/win32/VC10',
+    ])
+else:
+    env_lib.Append(CFLAGS=[
+        '-I','3rd/libxml2-2.9.4/',
+    ])
+
 # env_lib.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])
 
 lib_sources = [

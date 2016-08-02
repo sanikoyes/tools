@@ -19,36 +19,36 @@ def can_build():
 	if sys.platform == "darwin":
 		return False # no x11 on mac for now
 
-	errorval=os.system("pkg-config --version > /dev/null")
+	# errorval=os.system("pkg-config --version > /dev/null")
 
-	if (errorval):
-		print("pkg-config not found.. x11 disabled.")
-		return False
+	# if (errorval):
+	# 	print("pkg-config not found.. x11 disabled.")
+	# 	return False
 
-	x11_error=os.system("pkg-config x11 --modversion > /dev/null ")
-	if (x11_error):
-		print("X11 not found.. x11 disabled.")
-		return False
+	# x11_error=os.system("pkg-config x11 --modversion > /dev/null ")
+	# if (x11_error):
+	# 	print("X11 not found.. x11 disabled.")
+	# 	return False
 
-        ssl_error=os.system("pkg-config openssl --modversion > /dev/null ")
-        if (ssl_error):
-                print("OpenSSL not found.. x11 disabled.")
-                return False
+ #        ssl_error=os.system("pkg-config openssl --modversion > /dev/null ")
+ #        if (ssl_error):
+ #                print("OpenSSL not found.. x11 disabled.")
+ #                return False
 
-	x11_error=os.system("pkg-config xcursor --modversion > /dev/null ")
-	if (x11_error):
-		print("xcursor not found.. x11 disabled.")
-		return False
+	# x11_error=os.system("pkg-config xcursor --modversion > /dev/null ")
+	# if (x11_error):
+	# 	print("xcursor not found.. x11 disabled.")
+	# 	return False
 
-	x11_error=os.system("pkg-config xinerama --modversion > /dev/null ")
-	if (x11_error):
-		print("xinerama not found.. x11 disabled.")
-		return False
+	# x11_error=os.system("pkg-config xinerama --modversion > /dev/null ")
+	# if (x11_error):
+	# 	print("xinerama not found.. x11 disabled.")
+	# 	return False
 
-	x11_error=os.system("pkg-config xrandr --modversion > /dev/null ")
-	if (x11_error):
-			print("xrandr not found.. x11 disabled.")
-			return False
+	# x11_error=os.system("pkg-config xrandr --modversion > /dev/null ")
+	# if (x11_error):
+	# 		print("xrandr not found.. x11 disabled.")
+	# 		return False
 
 
 	return True # X11 enabled
@@ -60,19 +60,19 @@ def get_opts():
 	('use_static_cpp','link stdc++ statically','no'),
 	('use_sanitizer','Use llvm compiler sanitize address','no'),
 	('use_leak_sanitizer','Use llvm compiler sanitize memory leaks','no'),
-	('pulseaudio','Detect & Use pulseaudio','yes'),
-	('udev','Use udev for gamepad connection callbacks','no'),
-	('new_wm_api', 'Use experimental window management API','no'),
-	('debug_release', 'Add debug symbols to release version','no'),
+	# ('pulseaudio','Detect & Use pulseaudio','yes'),
+	# ('udev','Use udev for gamepad connection callbacks','no'),
+	# ('new_wm_api', 'Use experimental window management API','no'),
+	# ('debug_release', 'Add debug symbols to release version','no'),
 	]
 
 def get_flags():
 
 	return [
-	('builtin_zlib', 'no'),
-	('glew', 'yes'),
-	("openssl", "yes"),
-	('freetype','yes'), #use system freetype
+	# ('builtin_zlib', 'no'),
+	# ('glew', 'yes'),
+	# ("openssl", "yes"),
+	# ('freetype','yes'), #use system freetype
 
 	#("theora","no"),
         ]
@@ -141,15 +141,11 @@ def configure(env):
 	env.ParseConfig('pkg-config xcursor --cflags --libs')
 	env.ParseConfig('pkg-config xrandr --cflags --libs')
 
-	if (env["openssl"]=="yes"):
-		env.ParseConfig('pkg-config openssl --cflags --libs')
+	# if (env["openssl"]=="yes"):
+	# 	env.ParseConfig('pkg-config openssl --cflags --libs')
 
-
-	if (env["freetype"]=="yes"):
-		env.ParseConfig('pkg-config freetype2 --cflags --libs')
-
-
-
+	# if (env["freetype"]=="yes"):
+	# 	env.ParseConfig('pkg-config freetype2 --cflags --libs')
 
 	env.Append(CPPFLAGS=['-DOPENGL_ENABLED'])
 
@@ -162,27 +158,9 @@ def configure(env):
 
 	if (platform.system() == "Linux"):
 		env.Append(CPPFLAGS=["-DJOYDEV_ENABLED"])
-	if (env["udev"]=="yes"):
-		# pkg-config returns 0 when the lib exists...
-		found_udev = not os.system("pkg-config --exists libudev")
 
-		if (found_udev):
-			print("Enabling udev support")
-			env.Append(CPPFLAGS=["-DUDEV_ENABLED"])
-			env.ParseConfig('pkg-config libudev --cflags --libs')
-		else:
-			print("libudev development libraries not found, disabling udev support")
-
-	if (env["pulseaudio"]=="yes"):
-		if not os.system("pkg-config --exists libpulse-simple"):
-			print("Enabling PulseAudio")
-			env.Append(CPPFLAGS=["-DPULSEAUDIO_ENABLED"])
-			env.ParseConfig('pkg-config --cflags --libs libpulse-simple')
-		else:
-			print("PulseAudio development libraries not found, disabling driver")
-
-	env.Append(CPPFLAGS=['-DX11_ENABLED','-DUNIX_ENABLED','-DGLES2_ENABLED','-DGLES_OVER_GL'])
-	env.Append(LIBS=['GL', 'GLU', 'pthread', 'z'])
+	# env.Append(CPPFLAGS=['-DX11_ENABLED','-DUNIX_ENABLED','-DGLES2_ENABLED','-DGLES_OVER_GL'])
+	# env.Append(LIBS=['GL', 'GLU', 'pthread', 'z'])
 	if (platform.system() == "Linux"):
 		env.Append(LIBS='dl')
 	#env.Append(CPPFLAGS=['-DMPC_FIXED_POINT'])
@@ -199,14 +177,9 @@ def configure(env):
 
 	import methods
 
-	env.Append( BUILDERS = { 'GLSL120' : env.Builder(action = methods.build_legacygl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
-	env.Append( BUILDERS = { 'GLSL' : env.Builder(action = methods.build_glsl_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
-	env.Append( BUILDERS = { 'GLSL120GLES' : env.Builder(action = methods.build_gles2_headers, suffix = 'glsl.h',src_suffix = '.glsl') } )
-	#env.Append( BUILDERS = { 'HLSL9' : env.Builder(action = methods.build_hlsl_dx9_headers, suffix = 'hlsl.h',src_suffix = '.hlsl') } )
-
-	if(env["new_wm_api"]=="yes"):
-		env.Append(CPPFLAGS=['-DNEW_WM_API'])
-		env.ParseConfig('pkg-config xinerama --cflags --libs')
+	# if(env["new_wm_api"]=="yes"):
+	# 	env.Append(CPPFLAGS=['-DNEW_WM_API'])
+	# 	env.ParseConfig('pkg-config xinerama --cflags --libs')
 
 	if (env["use_static_cpp"]=="yes"):
 		env.Append(LINKFLAGS=['-static-libstdc++'])
@@ -214,4 +187,3 @@ def configure(env):
 	list_of_x86 = ['x86_64', 'x86', 'i386', 'i586']
 	if any(platform.machine() in s for s in list_of_x86):
 		env["x86_opt_gcc"]=True
-

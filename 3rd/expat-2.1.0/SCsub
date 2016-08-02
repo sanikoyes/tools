@@ -1,9 +1,14 @@
+import sys
 Import('env')
 
 env_expat = env.Clone()
 
-env_expat.Append(CFLAGS=['-DCOMPILED_FROM_DSP'])
-env_expat.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])
+if sys.platform in ['win32']:
+	env_expat.Append(CFLAGS=['-DCOMPILED_FROM_DSP'])
+	env_expat.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])
+else:
+	env_expat.Append(CFLAGS=['-DHAVE_EXPAT_CONFIG_H'])
+
 
 expat_sources = [
 	"lib/xmlparse.c",

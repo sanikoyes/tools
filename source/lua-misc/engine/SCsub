@@ -5,4 +5,6 @@ env_lib.add_source_files(env_lib.lib_sources, [
 	"curve/*.cpp",
 ])
 
-env_lib.Append(CPPFLAGS=['/EHsc'])
+import sys
+if sys.platform == "win32":
+	env_lib.Append(CPPFLAGS=['/EHsc'])

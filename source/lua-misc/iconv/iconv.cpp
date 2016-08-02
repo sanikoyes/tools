@@ -1,11 +1,13 @@
 // TODO: linux icon implement
 #include "iconv.h"
 
-#define WIN32_LEARN_AND_MEAN
-#include <Windows.h>
-
 #define CP_GBK	936
 #define CP_BIG5	950
+
+#ifdef _MSC_VER
+
+#define WIN32_LEARN_AND_MEAN
+#include <Windows.h>
 
 template<const int in_codepage, const int out_codepage>
 static bool convert(const std::string& in, std::string& out) {
@@ -35,6 +37,15 @@ static bool convert(const std::string& in, std::string& out) {
 
 	return true;
 }
+#else
+
+#define CP_UTF8	1
+
+template<const int in_codepage, const int out_codepage>
+static bool convert(const std::string& in, std::string& out) {
+	return false;
+}
+#endif
 
 bool utf2gbk(const std::string& in, std::string& out) {
 

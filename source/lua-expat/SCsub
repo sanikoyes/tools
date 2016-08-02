@@ -4,9 +4,12 @@ env_lib = env.Clone()
 
 
 FLAGS = [
-	'-DLUA_BUILD_AS_DLL',
 	'-I3rd/expat-2.1.0/lib'
 ]
+
+import sys
+if sys.platform == "win32":
+	FLAGS.append('-DLUA_BUILD_AS_DLL')
 
 env_lib.Append(CFLAGS=FLAGS)
 env_lib.Append(CPPFLAGS=FLAGS)

@@ -10,6 +10,10 @@
 extern "C" {
 #endif
 
+#ifndef HANDLE
+#define HANDLE (void *)
+#endif
+
 WRes HandlePtr_Close(HANDLE *h);
 WRes Handle_WaitObject(HANDLE h);
 

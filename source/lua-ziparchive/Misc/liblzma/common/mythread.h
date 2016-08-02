@@ -81,6 +81,9 @@ do { \
 
 #if !(defined(_WIN32) && !defined(__CYGWIN__))
 // Use sigprocmask() to set the signal mask in single-threaded programs.
+#ifndef sigset_t
+#define sigset_t void
+#endif
 static inline void
 mythread_sigmask(int how, const sigset_t *restrict set,
 		sigset_t *restrict oset)

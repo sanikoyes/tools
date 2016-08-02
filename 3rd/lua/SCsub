@@ -1,15 +1,24 @@
+import sys
 Import('env')
 
 env_lualib = env.Clone()
-env_lualib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
+env_lualib.Append(CFLAGS=['-DLUA_COMPAT_5_1'])
 
 env_lua = env.Clone()
-env_lua.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
-env_lua.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
+env_lua.Append(CFLAGS=['-DLUA_COMPAT_5_1'])
 
 env_luac = env.Clone()
-env_luac.Append(CFLAGS=['-DLUA_BUILD_AS_DLL','-DLUA_COMPAT_5_1'])
-env_luac.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
+env_luac.Append(CFLAGS=['-DLUA_COMPAT_5_1'])
+
+if sys.platform == "win32":
+	env_lualib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+
+	env_lua.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+	env_lua.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
+
+	env_luac.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+	env_luac.Append(LINKFLAGS=['/SUBSYSTEM:CONSOLE'])
+
 
 lualib_sources = [
 	"src/lapi.c",
@@ -50,7 +59,7 @@ lualib_sources = [
 # 	env_drivers.add_source_files(env.drivers_sources,"*.c",pp")
 lib = env_lualib.SharedLibrary("#bin/lua53", lualib_sources)
 # '.dll','.lib','.exp'
-lib = lib[1]
+# lib = lib[1]
 
 env.Prepend(LIBS=[lib])
 
