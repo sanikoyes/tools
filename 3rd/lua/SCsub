@@ -58,8 +58,11 @@ lualib_sources = [
 
 # 	env_drivers.add_source_files(env.drivers_sources,"*.c",pp")
 lib = env_lualib.SharedLibrary("#bin/lua53", lualib_sources)
-# '.dll','.lib','.exp'
-# lib = lib[1]
+
+import sys
+if sys.platform == "win32":
+	# '.dll','.lib','.exp'
+	lib = lib[1]
 
 env.Prepend(LIBS=[lib])
 

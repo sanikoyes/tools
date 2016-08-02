@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-#ifndef HANDLE
+#ifndef _MSC_VER
 #define HANDLE (void *)
 #endif
 

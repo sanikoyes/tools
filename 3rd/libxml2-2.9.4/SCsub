@@ -13,7 +13,7 @@ if sys.platform == "win32":
     ])
 else:
     env_lib.Append(CFLAGS=[
-        '-I','3rd/libxml2-2.9.4/',
+        '-I','3rd/libxml2-2.9.4/linux',
     ])
 
 # env_lib.Prepend(LINKFLAGS=['/DEF:3rd/expat-2.1.0/lib/libexpat.def'])

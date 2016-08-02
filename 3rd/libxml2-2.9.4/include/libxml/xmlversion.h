@@ -273,7 +273,7 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Whether iconv support is available
  */
-#if 1
+#ifndef _MSC_VER
 #define LIBXML_ICONV_ENABLED
 #endif
 
