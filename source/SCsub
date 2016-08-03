@@ -6,6 +6,7 @@ SConscript('luafilesystem/SCsub');
 SConscript('lua-zlib/SCsub');
 SConscript('lua-expat/SCsub');
 SConscript('lua-misc/SCsub');
+SConscript('lua-mbedtls/SCsub');
 
 if sys.platform == "win32":
 	SConscript('lua-xmlreader/SCsub')

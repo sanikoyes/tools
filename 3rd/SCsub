@@ -5,6 +5,7 @@ Import('env')
 SConscript('lua/SCsub');
 SConscript('zlib/SCsub')
 SConscript('expat-2.1.0/SCsub')
+SConscript('mbedtls/SCsub')
 
 if sys.platform == "win32":
 	SConscript('libxml2-2.9.4/SCsub')
