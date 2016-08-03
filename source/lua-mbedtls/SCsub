@@ -1,0 +1,22 @@
+Import('env')
+
+env_lib = env.Clone()
+
+import sys
+if sys.platform == "win32":
+	env_lib.Append(CFLAGS=[
+		'-DLUA_BUILD_AS_DLL',
+	])
+
+env_lib.Append(CFLAGS=[
+	'-I','3rd/mbedtls/include',
+	'-I','source/lua-mbedtls',
+])
+
+lib_sources = []
+
+env_lib.add_source_files(lib_sources, "*.c")
+env_lib.add_source_files(lib_sources, "src/*.c")
+
+env_lib.Prepend(LIBS=["mbedtls_lib"])
+env_lib.SharedLibrary("#bin/mbedtls", lib_sources)
