@@ -82,7 +82,7 @@ static Vector2 luaL_checkvector2(lua_State *L, int index) {
 
 static Vector2 luaL_optvector2(lua_State *L, int index, const Vector2& def = Vector2()) {
 
-	if(lua_istable(L, 1))
+	if(lua_istable(L, index))
 		return luaL_checkvector2(L, index);
 	return def;
 }
