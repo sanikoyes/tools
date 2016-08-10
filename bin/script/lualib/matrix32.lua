@@ -96,7 +96,7 @@ function meta:set_rotation_and_scale(rot, scale)
 	-- elements[1][0]=Math::sin(p_rot)*p_scale.y;
 	self:set_element(0, 0, math.cos(rot) * scale.x)
 	self:set_element(1, 1, math.cos(rot) * scale.y)
-	self:set_element(0, 1, math.sin(rot) * scale.x)
+	self:set_element(0, 1, -math.sin(rot) * scale.x)
 	self:set_element(1, 0, math.sin(rot) * scale.y)
 end
 
