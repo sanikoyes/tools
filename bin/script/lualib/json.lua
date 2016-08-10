@@ -32,6 +32,8 @@
 local math = require('math')
 local string = require("string")
 local table = require("table")
+local type = type
+local tostring = tostring
 
 local base = _G
 
@@ -101,8 +103,20 @@ function encode (v, tab, is_forward)
           table.insert(keys, i)
         end
       end
-      table.sort(forwards, function(left, right) return left >= right end)
-      table.sort(keys, function(left, right) return left < right end)
+      table.sort(forwards, function(left, right)
+        if type(left) == type(right) then
+          return left >= right
+        else
+          return tostring(left) >= tostring(right)
+        end
+      end)
+      table.sort(keys, function(left, right)
+        if type(left) == type(right) then
+          return left < right
+        else
+          return tostring(left) < tostring(right)
+        end
+      end)
       for _,k in base.pairs(forwards) do
         table.insert(keys, 1, k)
       end
