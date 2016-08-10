@@ -1,5 +1,6 @@
 local tscn = require "script.lualib.tscn"
 local utils = require "script.lualib.utils"
+local matrix32 = require "script.lualib.matrix32"
 
 --------------------------------------------------------------------------------
 -- 解析tscn gdscene数据
@@ -28,15 +29,52 @@ local function parse_gdscene(text)
         end
     end
 
+    function mt:get_pos()
+        local pos = self:get_property("transform/pos")
+        if pos then
+            local x,y = table.unpack(pos.props)
+            return { x = x, y = y }
+        else
+            return { x = 0, y = 0 }
+        end
+    end
+
+    function mt:get_scale()
+        local scale = self:get_property("transform/scale")
+        if scale then
+            local x,y = table.unpack(scale.props)
+            return { x = x, y = y }
+        else
+            return { x = 1, y = 1 }
+        end
+    end
+
+    function mt:get_rot()
+        return self:get_property("transform/rot") or 0
+    end
+
     function mt:get_property(name)
         local prop = self[name]
         if type(prop) == "table" then
             if prop.type == "SubResource" then
                 local id = prop.props[1]
-                return scene.sub_resources[id]
+                return setmetatable(scene.sub_resources[id], { __index = mt })
             end
         end
         return prop
+    end
+
+    function mt:get_transform()
+        local pos = self:get_pos()
+        local scale = self:get_scale()
+        local rot = self:get_rot()
+        -- print(self.type, string.format("pos(%f,%f) scale(%f,%f) rot(%f)", pos.x, pos.y, scale.x, scale.y, rot))
+
+        return matrix32.new(
+            pos,
+            scale,
+            math.rad(rot)
+        )
     end
 
     local parse_prims, parse_tags, get_prim
@@ -197,15 +235,15 @@ local function encode_variant(v)
     end
 
     local function encode_uint16(v)
-        return string.pack("<I2", v)
+        return string.pack(v < 0 and "<i2" or "<I2", v)
     end
 
     local function encode_uint32(v)
-        return string.pack("<I4", v)
+        return string.pack(v < 0 and "<i4" or "<I4", v)
     end
 
     local function encode_uint64(v)
-        return string.pack("<I8", v)
+        return string.pack(v < 0 and "<i4" or "<I8", v)
     end
 
     local function encode_float(v)
