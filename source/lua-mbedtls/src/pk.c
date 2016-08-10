@@ -31,18 +31,16 @@ static const luaL_Reg funcs[] = {
 // size_t mbedtls_pk_get_bitlen( const mbedtls_pk_context *ctx );
 // static inline size_t mbedtls_pk_get_len( const mbedtls_pk_context *ctx )
 // int mbedtls_pk_can_do( const mbedtls_pk_context *ctx, mbedtls_pk_type_t type );
+
 // int mbedtls_pk_verify( mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
 //                const unsigned char *hash, size_t hash_len,
 //                const unsigned char *sig, size_t sig_len );
+
 // int mbedtls_pk_verify_ext( mbedtls_pk_type_t type, const void *options,
 //                    mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
 //                    const unsigned char *hash, size_t hash_len,
 //                    const unsigned char *sig, size_t sig_len );
 
-// int mbedtls_pk_sign( mbedtls_pk_context *ctx, mbedtls_md_type_t md_alg,
-//              const unsigned char *hash, size_t hash_len,
-//              unsigned char *sig, size_t *sig_len,
-//              int (*f_rng)(void *, unsigned char *, size_t), void *p_rng );
 static int l_mbedtls_pk_sign(lua_State *L) {
 
 	mbedtls_pk_context *ctx = (mbedtls_pk_context *) luaL_checkudata(L, 1, CLASS_NAME);
@@ -84,8 +82,14 @@ static int l_mbedtls_pk_parse_key(lua_State *L) {
 	return 1;
 }
 
-// int mbedtls_pk_parse_public_key( mbedtls_pk_context *ctx,
-//                          const unsigned char *key, size_t keylen );
+static int l_mbedtls_pk_parse_public_key(lua_State *L) {
+
+	mbedtls_pk_context *ctx = (mbedtls_pk_context *) luaL_checkudata(L, 1, CLASS_NAME);
+	size_t keylen;
+	const unsigned char *key = luaL_checklstring(L, 2, &keylen);
+	lua_pushinteger(L, mbedtls_pk_parse_public_key(ctx, key, keylen));
+	return 1;
+}
 // int mbedtls_pk_parse_keyfile( mbedtls_pk_context *ctx,
 //                       const char *path, const char *password );
 // int mbedtls_pk_parse_public_keyfile( mbedtls_pk_context *ctx, const char *path );
@@ -108,6 +112,7 @@ static int l_gc(lua_State *L) {
 
 static const luaL_Reg methods[] = {
 	{ "parse_key", l_mbedtls_pk_parse_key },
+	{ "parse_public_key", l_mbedtls_pk_parse_public_key },
 	{ "sign", l_mbedtls_pk_sign },
 	{ "__gc", l_gc },
 	{ NULL, NULL },
