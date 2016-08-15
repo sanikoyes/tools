@@ -346,6 +346,19 @@ static int allua_display_get_monitor_info(lua_State * L)
    return 1;
 }
 
+static int allua_hold_bitmap_drawing(lua_State *L) {
+
+   int hold = lua_toboolean(L, 1);
+   al_hold_bitmap_drawing(hold);
+   return 0;
+}
+
+static int allua_is_bitmap_drawing_held(lua_State *L) {
+
+   lua_pushboolean(L, al_is_bitmap_drawing_held());
+   return 1;
+}
+
 static int allua_display_get_height(lua_State * L)
 {
    ALLUA_display display = allua_check_display(L, 1);
@@ -396,6 +409,8 @@ static const luaL_Reg allua_display_methods[] = {
    {"get_mode", allua_display_get_mode},
    {"get_num_video_adapters", allua_display_get_num_video_adapters},
    {"get_monitor_info", allua_display_get_monitor_info},
+   {"hold_bitmap_drawing", allua_hold_bitmap_drawing},
+   {"is_bitmap_drawing_held", allua_is_bitmap_drawing_held},
    {0, 0}
 };
 
