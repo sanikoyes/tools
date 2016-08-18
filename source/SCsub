@@ -2,6 +2,7 @@ import sys
 Import('env')
 
 SConscript('lua-cjson/SCsub');
+SConscript('lua-amf3/SCsub')
 SConscript('luafilesystem/SCsub');
 SConscript('lua-zlib/SCsub');
 SConscript('lua-expat/SCsub');

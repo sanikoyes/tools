@@ -1,0 +1,15 @@
+Import('env')
+
+env_lib = env.Clone()
+
+import sys
+if sys.platform in ['win32']:
+	env_lib.Append(CFLAGS=['-DLUA_BUILD_AS_DLL'])
+
+lib_sources = [
+	"src/amf3.c",
+	"src/amf3_decode.c",
+	"src/amf3_encode.c",
+]
+
+env_lib.SharedLibrary("#bin/amf3", lib_sources)
