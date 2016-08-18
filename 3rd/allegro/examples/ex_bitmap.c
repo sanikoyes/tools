@@ -54,6 +54,7 @@ int main(int argc, char **argv)
      */
     al_install_mouse();
     al_install_keyboard();
+	al_set_new_display_flags(ALLEGRO_OPENGL);
 
     /* Initialize the image addon. Requires the allegro_image addon
      * library.
