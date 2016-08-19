@@ -3,57 +3,61 @@ local alleg = require "liballua"
 local json = require "lualib.json"
 local amf3 = require "amf3"
 
+local dir = "ef"
 
--- local function pre_process()
--- 	local function traversalDir(path, callback)
--- 		for name in lfs.dir(path) do
--- 			if name == "." or name == ".." then
--- 			else
--- 				local fullPath = string.format("%s/%s", path, name)
--- 				local fa = lfs.attributes(fullPath)
--- 				if fa.mode == "directory" then
--- 					traversalDir(fullPath, callback)
--- 				else
--- 					callback(fullPath, fa)
--- 				end
--- 			end
--- 		end
--- 	end
+local function pre_process()
+	local function traversalDir(path, callback)
+		for name in lfs.dir(path) do
+			if name == "." or name == ".." then
+			else
+				local fullPath = string.format("%s/%s", path, name)
+				local fa = lfs.attributes(fullPath)
+				if fa.mode == "directory" then
+					traversalDir(fullPath, callback)
+				else
+					callback(fullPath, fa)
+				end
+			end
+		end
+	end
 
--- 	local metas = {}
+	os.execute(string.format("mkdir %s/binary", dir):gsub("/", "\\"))
 
--- 	for _,path in pairs({ "binaryData", "images" }) do
--- 		traversalDir(path, function(path, fa)
--- 			local fp = io.open(path, "rb")
--- 			local ctx = fp:read "*all"
--- 			fp:close()
+	local metas = {}
 
--- 			path = path:gsub("%./%w+/", "")
--- 			if path:match("%d+_[%w%d_]+%$................................[%d-]+%.%w+") then
--- 				local id, name, md5, ofs = path:match("(%d+)_([%w%d_]+)%$(................................)([%d-]+)%.%w+")
--- 				name = name:gsub("_%w+$", function(pat)
--- 					return pat:gsub("_", ".")
--- 				end)
--- 				table.insert(metas, {
--- 					id = id,
--- 					name = name,
--- 					md5 = md5,
--- 					ofs = ofs,
--- 				})
--- 				print("  >> " .. name)
--- 				local fp = io.open("binary/" .. name, "wb")
--- 				fp:write(ctx)
--- 				fp:close()
--- 			else
--- 			end
--- 		end)
--- 	end
+	for _,path in pairs({ dir .. "/binaryData", dir .. "/images" }) do
+		traversalDir(path, function(path, fa)
+			local fp = io.open(path, "rb")
+			local ctx = fp:read "*all"
+			fp:close()
 
--- 	local js = json.encode(metas)
--- 	local fp = io.open("binary/metas.json", "wb")
--- 	fp:write(js)
--- 	fp:close()
--- end
+			path = path:gsub("%./%w+/", "")
+			if path:match("%d+_[%w%d_]+%$................................[%d-]+%.%w+") then
+				local id, name, md5, ofs = path:match("(%d+)_([%w%d_]+)%$(................................)([%d-]+)%.%w+")
+				name = name:gsub("_%w+$", function(pat)
+					return pat:gsub("_", ".")
+				end)
+				table.insert(metas, {
+					id = id,
+					name = name,
+					md5 = md5,
+					ofs = ofs,
+				})
+				print("  >> " .. name)
+				local fp = io.open(dir .. "/binary/" .. name, "wb")
+				fp:write(ctx)
+				fp:close()
+			else
+			end
+		end)
+	end
+
+	local js = json.encode(metas)
+	local fp = io.open(dir .. "/binary/metas.json", "wb")
+	fp:write(js)
+	fp:close()
+end
+pre_process()
 
 alleg.init()
 alleg.bitmap.init_image_addon()
@@ -121,14 +125,13 @@ local function export(file_name)
 	collectgarbage()
 end
 
-local dir = "endlessfrontier/binary"
+local dir = dir .. "/binary"
 for name in lfs.dir(dir) do
 	if name:match("%.vo$") then
 		local fn = string.format("%s/%s", dir, name)
 		print("Export endless-frontier vo spritesheet: " .. fn)
 		export(fn)
-		os.exit()
 	end
 end
 
--- export("endlessfrontier/binary/UI2.vo")
+-- -- export("endlessfrontier/binary/UI2.vo")
