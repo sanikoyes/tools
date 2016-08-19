@@ -1,9 +1,9 @@
 local lfs = require "lfs"
 local alleg = require "liballua"
-local json = require "lualib.json"
+local json = require "script.lualib.json"
 local amf3 = require "amf3"
 
-local dir = "ef"
+local dir = "endlessfrontier"
 
 local function pre_process()
 	local function traversalDir(path, callback)
@@ -31,8 +31,10 @@ local function pre_process()
 			local ctx = fp:read "*all"
 			fp:close()
 
-			path = path:gsub("%./%w+/", "")
 			if path:match("%d+_[%w%d_]+%$................................[%d-]+%.%w+") then
+				os.execute(string.format("del %s", path):gsub("/", "\\"))
+
+				path = path:gsub("%./%w+/", "")
 				local id, name, md5, ofs = path:match("(%d+)_([%w%d_]+)%$(................................)([%d-]+)%.%w+")
 				name = name:gsub("_%w+$", function(pat)
 					return pat:gsub("_", ".")
@@ -49,6 +51,7 @@ local function pre_process()
 				fp:close()
 			else
 			end
+
 		end)
 	end
 
@@ -120,8 +123,8 @@ local function export(file_name)
 
 		target:save(writeDir)
 	end
--- 	os.execute("del " .. file_name:gsub("/", "\\"))
--- 	os.execute("del " .. textureFileName:gsub("/", "\\"))
+	os.execute("del " .. file_name:gsub("/", "\\"))
+	os.execute("del " .. textureFileName:gsub("/", "\\"))
 	collectgarbage()
 end
 
