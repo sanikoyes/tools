@@ -372,12 +372,47 @@ static int lz_crc32(lua_State *L) {
     return lz_checksum_new(L, crc32, crc32_combine);
 }
 
+static int lz_compress(lua_State *L) {
+
+    size_t sourceLen;
+    const char *source = luaL_checklstring(L, 1, &sourceLen);
+    int level = luaL_optinteger(L, 2, Z_DEFAULT_COMPRESSION);
+
+    uLongf destLen = compressBound(sourceLen);
+    Bytef *dest = (Bytef *) malloc(destLen);
+    if(compress2(dest, &destLen, source, sourceLen, level) == Z_OK)
+        lua_pushlstring(L, dest, destLen);
+    else
+        lua_pushnil(L);
+
+    free(dest);
+    return 1;
+}
+
+static int lz_uncompress(lua_State *L) {
+
+    size_t sourceLen;
+    const char *source = luaL_checklstring(L, 1, &sourceLen);
+    int destLen = luaL_checkinteger(L, 2);
+
+    Bytef *dest = (Bytef *) malloc(destLen);
+    if(uncompress(dest, &destLen, source, sourceLen) == Z_OK)
+        lua_pushlstring(L, dest, destLen);
+    else
+        lua_pushnil(L);
+
+    free(dest);
+    return 1;
+}
+
 static const luaL_Reg zlib_functions[] = {
     { "deflate", lz_deflate_new },
     { "inflate", lz_inflate_new },
     { "adler32", lz_adler32     },
     { "crc32",   lz_crc32       },
     { "version", lz_version     },
+    { "compress", lz_compress },
+    { "uncompress", lz_uncompress },
     { NULL,      NULL           }
 };
 

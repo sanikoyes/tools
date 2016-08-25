@@ -17,6 +17,7 @@ SConscript('ccz/SCsub')
 SConscript('engine/SCsub')
 SConscript('iconv/SCsub')
 SConscript('xxtea/SCsub')
+SConscript('pad/SCsub')
 
 env_lib.Prepend(LIBS=["zlib1"])
 env_lib.SharedLibrary("#bin/misc", env_lib.lib_sources)
