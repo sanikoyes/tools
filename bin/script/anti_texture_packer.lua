@@ -33,21 +33,21 @@ local function export(file_name)
 	os.execute(cmd:gsub("/", "\\"))
 
 	local function parse_size(str)
-		local w,h = str:match("(-?%d+),(-?%d+)")
+		local w,h = str:match("(-?%d+),%s?(-?%d+)")
 		return {
 			w = tonumber(w),
 			h = tonumber(h),
 		}
 	end
 	local function parse_pos(str)
-		local x,y = str:match("(-?%d+),(-?%d+)")
+		local x,y = str:match("(-?%d+),%s?(-?%d+)")
 		return {
 			x = tonumber(x),
 			y = tonumber(y),
 		}
 	end
 	local function parse_rect(str)
-		local x,y,w,h = str:match("{{(-?%d+),(-?%d+)},{(-?%d+),(-?%d+)}}")
+		local x,y,w,h = str:match("{{(-?%d+),%s?(-?%d+)},%s?{(-?%d+),%s?(-?%d+)}}")
 		return {
 			x = tonumber(x),
 			y = tonumber(y),
@@ -56,25 +56,113 @@ local function export(file_name)
 		}
 	end
 
+	local function parse_info(info)
+		local patterns = {
+			{
+				-- {
+				--   "frame": "{{1701,3},{84,84}}",
+				--   "offset": "{0,0}",
+				--   "rotated": false,
+				--   "sourceColorRect": "{{0,0},{84,84}}",
+				--   "sourceSize": "{84,84}"
+				-- }
+				keys = { "frame", "offset", "rotated", "sourceColorRect", "sourceSize" },
+				parser = function()
+					return {
+						frame = parse_rect(info.frame),
+						-- offset = parse_pos(info.offset),
+						rotated = info.rotated,
+						sourceColorRect = parse_rect(info.sourceColorRect),
+						sourceSize = parse_size(info.sourceSize),
+					}
+				end,
+			},
+			{
+				-- {
+				--   "aliases": [],
+				--   "spriteColorRect": "{{27, 2}, {65, 93}}",
+				--   "spriteOffset": "{13, -1}",
+				--   "spriteSize": "{65, 93}",
+				--   "spriteSourceSize": "{93, 95}",
+				--   "spriteTrimmed": true,
+				--   "textureRect": "{{962, 1327}, {93, 65}}",
+				--   "textureRotated": true
+				-- }
+				keys = { "spriteColorRect", "spriteOffset", "spriteSize", "spriteSourceSize", "spriteTrimmed", "textureRect", "textureRotated" },
+				parser = function()
+					return {
+						frame = parse_rect(info.textureRect),
+						offset = parse_pos(info.spriteOffset),
+						rotated = info.textureRotated,
+						sourceColorRect = parse_pos(info.spriteColorRect),
+						sourceSize = parse_size(info.spriteSourceSize),
+					}
+				end,
+			},
+			{
+				-- {
+				--   "spriteOffset": "{-1,0}",
+				--   "spriteSize": "{45,79}",
+				--   "spriteSourceSize": "{49,79}",
+				--   "textureRect": "{{525,12},{45,79}}",
+				--   "textureRotated": true
+				-- }
+				keys = { "spriteOffset", "spriteSize", "spriteSourceSize", "textureRect", "textureRotated" },
+				parser = function()
+					return {
+						frame = parse_rect(info.textureRect),
+						offset = parse_pos(info.spriteOffset),
+						rotated = info.textureRotated,
+						sourceColorRect = parse_pos(info.spriteOffset),
+						sourceSize = parse_size(info.spriteSourceSize),
+					}
+				end,
+			},
+		}
+
+		for _,p in pairs(patterns) do
+			local match = true
+			for _,k in pairs(p.keys) do
+				if info[k] == nil then
+					match = false
+					break
+				end
+			end
+			if match then
+				-- print(json.encode(info))
+				-- print("Match: " .. json.encode(p.keys))
+				return p.parser()
+			end
+		end
+	end
+
 	for key,info in pairs(data.frames) do
-		local frame = parse_rect(info.frame or info.textureRect)
-		-- local offset = parse_pos(info.offset)
-		local rotated = (info.rotated ~= nil) and info.rotated or info.textureRotated
-		local sourceColorRect = info.sourceColorRect and parse_rect(info.sourceColorRect) or parse_pos(info.spriteOffset)
-		local sourceSize = parse_size(info.sourceSize or info.spriteSourceSize)
+		-- if key == "ih_a_coinshower_06.png" then
+		-- print(json.encode(info))
+		local data = parse_info(info)
+		-- print(json.encode(data))
+		-- assert(data ~= nil)
 
-		if info.spriteOffset then
-			local x = (sourceSize.w - frame.w) / 2
-			local y = (sourceSize.h - frame.h) / 2
-			sourceColorRect.x = x + sourceColorRect.x
-			sourceColorRect.y = y + sourceColorRect.y
-		end
+		local frame = assert(data.frame)
+		local offset = data.offset
+		local rotated = data.rotated
+		local sourceColorRect = assert(data.sourceColorRect)
+		local sourceSize = assert(data.sourceSize)
 
-		if rotated then
-			local w = frame.w
-			frame.w = frame.h
-			frame.h = w
-		end
+		-- if offset then
+		-- 	-- local x = (sourceSize.w - frame.w) / 2
+		-- 	-- local y = (sourceSize.h - frame.h) / 2
+		-- 	local x = offset.x
+		-- 	local y = offset.y
+		-- 	sourceColorRect.x = x + sourceColorRect.x
+		-- 	sourceColorRect.y = y + sourceColorRect.y
+		-- end
+
+		-- if rotated then
+		-- 	local w = frame.w
+		-- 	frame.w = frame.h
+		-- 	frame.h = w
+		-- end
 
 		local sub = bitmap:create_sub(frame.x, frame.y, frame.w, frame.h)
 		local target = alleg.bitmap.create(sourceSize.w, sourceSize.h)
@@ -97,15 +185,17 @@ local function export(file_name)
 		local writeDir = path .. "/" .. key
 		print("Save to: " .. writeDir)
 		target:save(writeDir)
+		-- end
 	end
 	-- print(json.encode(data))
-	os.execute("del " .. file_name:gsub("/", "\\"))
-	os.execute("del " .. textureFileName:gsub("/", "\\"))
+	-- os.execute("del " .. file_name:gsub("/", "\\"))
+	-- os.execute("del " .. textureFileName:gsub("/", "\\"))
 end
 
-local dir = "assets/ResourcesCN"
+local dir = "FiveDragons"
 for name in lfs.dir(dir) do
 	if name:match("%.plist$") then
+	-- if name:match("fd_t_selector%-hd.plist$") then
 		local fn = string.format("%s/%s", dir, name)
 		print("Export texture packer plist: " .. fn)
 		export(fn)
