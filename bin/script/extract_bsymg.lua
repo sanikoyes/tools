@@ -1,5 +1,6 @@
 -- 不思议迷宫
 local lfs = require "lfs"
+local xxtea = require "misc.xxtea"
 
 local key = table.concat {
 	"// Dump Ref object memory leaks if (__refAllocationList.empty())",
@@ -44,7 +45,7 @@ local function xor_decrypt(ctx)
 	return table.concat(tokens)
 end
 
-traversal_dir("../..", function(path, fa)
+traversal_dir("bsymg/assets/res", function(path, fa)
 	if path:find("%.png$") then
 
 		local ctx = io.open(path, "rb"):read "*all"
@@ -54,5 +55,25 @@ traversal_dir("../..", function(path, fa)
 			io.open(path, "wb"):write(ctx)
 		end
 		collectgarbage()
+	end
+end)
+
+local sign = "applicationWillEnterForeground"
+local key = "applicationDidEnterBackground"
+
+traversal_dir("bsymg/assets/src", function(path, fa)
+	if path:find("%.luac$") then
+
+		local ctx = io.open(path, "rb"):read "*all"
+		if ctx:find(sign) == 1 then
+			print("Decrypting " .. path)
+
+			ctx = ctx:sub(#sign + 1)
+			ctx = xxtea.decrypt(ctx, key)
+
+			io.open(path, "wb"):write(ctx)
+
+			collectgarbage()
+		end
 	end
 end)
