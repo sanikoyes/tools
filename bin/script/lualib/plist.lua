@@ -79,6 +79,9 @@ local function load_plist(text)
             ["integer"] = function()
                 return tonumber(next_text("integer"))
             end,
+            ["real"] = function()
+                return tonumber(next_text("real"))
+            end,
             ["true"] = function()
                 return true
             end,
@@ -88,7 +91,7 @@ local function load_plist(text)
         }
 
         local tag = tag or next_tag()
-        local f = assert(loaders[tag], "unknown tag: " .. tag)
+        local f = assert(loaders[tag], "unknown tag: " .. (tag or "nil"))
         return f()
     end
 

@@ -29,6 +29,10 @@ local function parse_gdscene(text)
         end
     end
 
+    function mt:get_child_count()
+        return #self.children
+    end
+
     function mt:get_pos()
         local pos = self:get_property("transform/pos")
         if pos then

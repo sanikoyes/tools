@@ -28,7 +28,7 @@ local function export(file_name)
 
 	local textureFileName = string.format("%s.png", path)
 	local bitmap = assert(alleg.bitmap.load(textureFileName), "Unable to load texture: " .. textureFileName)
-	local cmd = "mkdir " .. path
+	local cmd = string.format('mkdir "%s"', path)
 	print(cmd)
 	os.execute(cmd:gsub("/", "\\"))
 
@@ -70,7 +70,7 @@ local function export(file_name)
 				parser = function()
 					return {
 						frame = parse_rect(info.frame),
-						-- offset = parse_pos(info.offset),
+						offset = parse_pos(info.offset),
 						rotated = info.rotated,
 						sourceColorRect = parse_rect(info.sourceColorRect),
 						sourceSize = parse_size(info.sourceSize),
@@ -144,25 +144,23 @@ local function export(file_name)
 		-- assert(data ~= nil)
 
 		local frame = assert(data.frame)
-		local offset = data.offset
+		local offset = data.offset or { x = 0, y = 0, }
 		local rotated = data.rotated
 		local sourceColorRect = assert(data.sourceColorRect)
 		local sourceSize = assert(data.sourceSize)
 
-		-- if offset then
-		-- 	-- local x = (sourceSize.w - frame.w) / 2
-		-- 	-- local y = (sourceSize.h - frame.h) / 2
-		-- 	local x = offset.x
-		-- 	local y = offset.y
-		-- 	sourceColorRect.x = x + sourceColorRect.x
-		-- 	sourceColorRect.y = y + sourceColorRect.y
-		-- end
+		-- 	local x = (sourceSize.w - frame.w) / 2
+		-- 	local y = (sourceSize.h - frame.h) / 2
+		-- local x = offset.x
+		-- local y = offset.y
+		-- sourceColorRect.x = sourceColorRect.x - x
+		-- sourceColorRect.y = sourceColorRect.y - y
 
-		-- if rotated then
-		-- 	local w = frame.w
-		-- 	frame.w = frame.h
-		-- 	frame.h = w
-		-- end
+		if rotated then
+			local w = frame.w
+			frame.w = frame.h
+			frame.h = w
+		end
 
 		local sub = bitmap:create_sub(frame.x, frame.y, frame.w, frame.h)
 		local target = alleg.bitmap.create(sourceSize.w, sourceSize.h)
@@ -180,8 +178,16 @@ local function export(file_name)
 				0
 			)
 		else
-			alleg.bitmap.draw_rotated(sub, 0, 0, sourceColorRect.x, sourceColorRect.y, 0, 0)
+			alleg.bitmap.draw_rotated(sub,
+				0,
+				0,
+				sourceColorRect.x,
+				sourceColorRect.y,
+				0,
+				0
+			)
 		end
+		key = key:gsub("%.gif$", ".png")
 		local writeDir = path .. "/" .. key
 		print("Save to: " .. writeDir)
 		target:save(writeDir)
@@ -192,15 +198,38 @@ local function export(file_name)
 	-- os.execute("del " .. textureFileName:gsub("/", "\\"))
 end
 
-local dir = "FiveDragons"
-for name in lfs.dir(dir) do
-	if name:match("%.plist$") then
-	-- if name:match("fd_t_selector%-hd.plist$") then
-		local fn = string.format("%s/%s", dir, name)
-		print("Export texture packer plist: " .. fn)
-		export(fn)
-		-- os.exit()
+local function traversalDir(path, callback)
+	for name in lfs.dir(path) do
+		if name == "." or name == ".." then
+		else
+			local full = string.format("%s/%s", path, name)
+			local fa = lfs.attributes(full)
+			if fa.mode == "directory" then
+				traversalDir(full, callback)
+			else
+				callback(full, fa)
+			end
+		end
 	end
 end
+
+local dir = "Slot Machine/assets"
+traversalDir(dir, function(path, fa)
+	if path:match("%.plist$") then
+		print("Export texture packer plist: " .. path)
+		export(path)
+	end
+end)
+
+-- local dir = "xjdw/g/brnn/card_show"
+-- for name in lfs.dir(dir) do
+-- 	if name:match("%.plist$") then
+-- 	-- if name:match("fd_t_selector%-hd.plist$") then
+-- 		local fn = string.format("%s/%s", dir, name)
+-- 		print("Export texture packer plist: " .. fn)
+-- 		export(fn)
+-- 		-- os.exit()
+-- 	end
+-- end
 -- export("ui_function_enchantment.plist")
 -- export("backroom.plist")
