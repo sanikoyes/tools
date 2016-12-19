@@ -2,18 +2,11 @@
 local lfs = require "lfs"
 local xxtea = require "misc.xxtea"
 
-local key = table.concat {
-	"// Dump Ref object memory leaks if (__refAllocationList.empty())",
-	" { log([memory] All Ref objects successfully cleaned up (no leak",
-	"s detected).\n",
-	"); } else { log([memory] WARNING: %d Ref objects still active in",
-	" memory.\n",
-	", (int)__refAllocationList.size()); for (const auto& ref : __ref",
-	"AllocationList) { CC_ASSERT(ref); const char* type = typeid(*ref",
-	").name(); log([memory] LEAK: Ref object %s still active with ref",
-	"erence count %d.\n",
-	", (type ? type : ), ref->getReferenceCount()); }}",
-}
+local key = [[// Dump Ref object memory leaks if (__refAllocationList.empty()) { log([memory] All Ref objects successfully cleaned up (no leaks detected).
+); } else { log([memory] WARNING: %d Ref objects still active in memory.
+, (int)__refAllocationList.size()); for (const auto& ref : __refAllocationList) { CC_ASSERT(ref); const char* type = typeid(*ref).name(); log([memory] LEAK: Ref object %s still active with reference count %d.
+, (type ? type : ), ref->getReferenceCount()); }}]]
+
 -- 遍历路径
 local function traversal_dir(path, callback)
 	for name in lfs.dir(path) do
@@ -45,7 +38,7 @@ local function xor_decrypt(ctx)
 	return table.concat(tokens)
 end
 
-traversal_dir("bsymg/assets/res", function(path, fa)
+local function decrypt_res(path, fa)
 	if path:find("%.png$") then
 
 		local ctx = io.open(path, "rb"):read "*all"
@@ -56,14 +49,16 @@ traversal_dir("bsymg/assets/res", function(path, fa)
 		end
 		collectgarbage()
 	end
-end)
+end
+
+traversal_dir("bsymg/assets/res", decrypt_res)
+traversal_dir("bsymg/assets/update_res/res", decrypt_res)
 
 local sign = "applicationWillEnterForeground"
 local key = "applicationDidEnterBackground"
 
-traversal_dir("bsymg/assets/src", function(path, fa)
+local decrypt_script = function(path, fa)
 	if path:find("%.luac$") then
-
 		local ctx = io.open(path, "rb"):read "*all"
 		if ctx:find(sign) == 1 then
 			print("Decrypting " .. path)
@@ -76,4 +71,7 @@ traversal_dir("bsymg/assets/src", function(path, fa)
 			collectgarbage()
 		end
 	end
-end)
+end
+
+traversal_dir("bsymg/assets/src", decrypt_script)
+traversal_dir("bsymg/assets/update_res/src", decrypt_script)
