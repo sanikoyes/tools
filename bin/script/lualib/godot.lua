@@ -203,6 +203,46 @@ local Type = {
 
 local function encode_variant(v)
     local num_keys = 0
+
+    local function etype(element)
+        local t = type(element)
+        if t == "number" then
+            if element == math.floor(element) then
+                return Type.INT
+            else
+                return Type.REAL
+            end
+        elseif t == "string" then
+            return Type.STRING
+        elseif t == "boolean" then
+            return Type.BOOl
+        end
+        return Type.NIL
+    end
+
+    local function array2type(v)
+        local t = etype(v[1])
+        if t == Type.NIL then
+            return Type.ARRAY
+        end
+
+        for _,field in pairs(v) do
+            if etype(field) ~= t then
+                return Type.ARRAY
+            end
+        end
+
+        if t == Type.INT then
+            return Type.INT_ARRAY
+        elseif t == Type.REAL then
+            return Type.REAL_ARRAY
+        elseif t == Type.STRING then
+            return Type.STRING_ARRAY
+        end
+
+        return Type.ARRAY
+    end
+
     local function var2type(v)
         local t = type(v)
         if t == "table" then
@@ -221,8 +261,10 @@ local function encode_variant(v)
                         return Type.VECTOR2
                     end
                 end
+            else
+                return array2type(v)
             end
-            return is_array and Type.ARRAY or Type.DICTIONARY
+            return Type.DICTIONARY
         elseif t == "boolean" then
             return Type.BOOL
         elseif t == "number" then
@@ -303,6 +345,15 @@ local function encode_variant(v)
             table.insert(tokens, encode_variant(v))
         end
         buf = buf .. table.concat(tokens)
+    elseif t == Type.INT_ARRAY then
+        local tokens = {}
+        table.insert(tokens, encode_uint32(#v))
+        for _,v in pairs(v) do
+            table.insert(tokens, encode_uint32(v))
+        end
+        buf = buf .. table.concat(tokens)
+    else
+        error("Unknown type : " .. t)
     end
     return buf
 end
