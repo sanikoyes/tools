@@ -1,4 +1,4 @@
--- Idle Heroes
+-- 冒险与挖矿
 local lfs = require "lfs"
 local xxtea = require "misc.xxtea"
 local zlib = require "zlib"
@@ -18,15 +18,11 @@ local function traversal_dir(path, callback)
 	end
 end
 
-
-local sign = "DHGAMES"
-local key = "cxxwp5tcPIJ0x90r"
-
-local zlib_sign = "DHZAMES"
+local sign = "NzdtbWFh"
+local key = "ZW5pbS12ZGE"
 
 local decrypt_script = function(path, fa)
-	if fa.mode == "file" then
-	-- if path:find("%.lua$") or path:find("%.png$") then
+	if path:find("%.lua$") or path:find("%.csv$") then
 		local ctx = io.open(path, "rb"):read "*all"
 		if ctx:find(sign) == 1 then
 			print("Decrypting " .. path)
@@ -35,16 +31,11 @@ local decrypt_script = function(path, fa)
 			ctx = xxtea.decrypt(ctx, key)
 
 			if #ctx > 0 then
-				-- print(path, #ctx)
+				print(path, #ctx)
 				io.open(path, "wb"):write(ctx)
 			end
-
-		elseif ctx:find(zlib_sign) == 1 then
-			print("Decompressing " .. path)
-			ctx = ctx:sub(#zlib_sign + 1)
-			local inflate = zlib.inflate()
-			ctx = inflate(ctx)
-
+		elseif path:find("%.csv$") then
+			ctx = xxtea.decrypt(ctx, key)
 			if #ctx > 0 then
 				print(path, #ctx)
 				io.open(path, "wb"):write(ctx)
@@ -54,5 +45,5 @@ local decrypt_script = function(path, fa)
 	end
 end
 
-traversal_dir("IdleHeroes", decrypt_script)
+traversal_dir("mxywk", decrypt_script)
 

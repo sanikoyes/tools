@@ -24,7 +24,9 @@ local function export(file_name)
 		return
 	end
 
-	local path = file_name:gsub("%.%w+", "")
+	print("filename is : " .. file_name)
+	local path = file_name:gsub("%.[%w%.%d]+$", "")
+	print("path is : " .. path)
 
 	local textureFileName = string.format("%s.png", path)
 	local bitmap = assert(alleg.bitmap.load(textureFileName), "Unable to load texture: " .. textureFileName)
@@ -190,7 +192,17 @@ local function export(file_name)
 		key = key:gsub("%.gif$", ".png")
 		local writeDir = path .. "/" .. key
 		print("Save to: " .. writeDir)
-		target:save(writeDir)
+		if not target:save(writeDir) then
+			local subpath = path
+			for sub in key:gmatch("([%w%.%d_]+)/") do
+				subpath = subpath .. "/" .. sub
+				print("Sub directory: " .. path)
+				local cmd = string.format('mkdir "%s"', subpath)
+				print(cmd)
+				os.execute(cmd:gsub("/", "\\"))
+				assert(target:save(writeDir), "Unable to save " .. writeDir)
+			end
+		end
 		-- end
 	end
 	-- print(json.encode(data))
@@ -213,7 +225,7 @@ local function traversalDir(path, callback)
 	end
 end
 
-local dir = "Slot Machine/assets"
+local dir = "mxywk"
 traversalDir(dir, function(path, fa)
 	if path:match("%.plist$") then
 		print("Export texture packer plist: " .. path)

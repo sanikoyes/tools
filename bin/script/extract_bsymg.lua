@@ -51,8 +51,7 @@ local function decrypt_res(path, fa)
 	end
 end
 
-traversal_dir("bsymg/assets/res", decrypt_res)
-traversal_dir("bsymg/assets/update_res/res", decrypt_res)
+traversal_dir("bsymg/assets", decrypt_res)
 
 local sign = "applicationWillEnterForeground"
 local key = "applicationDidEnterBackground"
@@ -73,5 +72,5 @@ local decrypt_script = function(path, fa)
 	end
 end
 
-traversal_dir("bsymg/assets/src", decrypt_script)
-traversal_dir("bsymg/assets/update_res/src", decrypt_script)
+traversal_dir("bsymg/assets", decrypt_script)
+
