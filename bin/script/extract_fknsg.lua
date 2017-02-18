@@ -118,7 +118,7 @@ local function encrypt_hash_prime()
     0x6D, 0x71, 0x77, 0,
   }
   for i = 1, 32 do
-    HASH_BITS[i] = HASH_KEYS[secret[i]]
+    HASH_BITS[i] = HASH_KEYS[secret[i] + 1]
   end
   HASH_BITS[128] = 32
   return true
@@ -349,8 +349,8 @@ end
 local sign = "\xFE\xFE\xFE\xFE"
 
 local decrypt_script = function(path, fa)
-  if path:find("%.lua$") then
-  -- if fa.mode == "file" then
+  -- if path:find("%.lua$") then
+  if fa.mode == "file" then
     local ctx = io.open(path, "rb"):read "*all"
     if ctx:find(sign) == 1 then
       print("Decrypting " .. path)
