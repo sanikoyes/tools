@@ -36,7 +36,7 @@ static const mbedtls_md_info_t *check_md_info_t(lua_State *L, int idx) {
 // 	const unsigned char *input = luaL_checklstring(L, 3, &ilen);
 // }
 
-static l_context(lua_State *L) {
+static int l_context(lua_State *L) {
 
 	mbedtls_md_context_t *ctx = lua_newuserdata(L, sizeof(mbedtls_md_context_t));
 	mbedtls_md_init(ctx);
@@ -86,7 +86,7 @@ static int l_mbedtls_md_update(lua_State *L) {
 
 	mbedtls_md_context_t *ctx = (mbedtls_md_context_t *) luaL_checkudata(L, 1, CLASS_NAME);
 	size_t ilen;
-	const unsigned char *input = luaL_checklstring(L, 2, &ilen);
+	const unsigned char *input = (const unsigned char *) luaL_checklstring(L, 2, &ilen);
 	lua_pushinteger(L, mbedtls_md_update(ctx, input, ilen));
 	return 1;
 }
@@ -96,8 +96,9 @@ static int l_mbedtls_md_finish(lua_State *L) {
 	mbedtls_md_context_t *ctx = (mbedtls_md_context_t *) luaL_checkudata(L, 1, CLASS_NAME);
 
 	unsigned char output[64];
+	int size = mbedtls_md_get_size(ctx->md_info);
 	lua_pushinteger(L, mbedtls_md_finish(ctx, output));
-	lua_pushlstring(L, output, sizeof(output));
+	lua_pushlstring(L, (const char *) output, size);
 	return 2;
 }
 

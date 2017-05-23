@@ -42,6 +42,9 @@ static const struct luaL_Reg xxtea_lib[] = {
     { NULL, NULL },
 };
 
+#ifdef WIN32
+__declspec(dllexport)
+#endif
 LUA_API int luaopen_misc_xxtea(lua_State *L) {
     luaL_newlib(L, xxtea_lib);
     return 1;
